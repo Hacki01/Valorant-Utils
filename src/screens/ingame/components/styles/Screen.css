@@ -1,0 +1,10 @@
+html,body{
+  margin: 0;
+  overflow: hidden;
+}
+.ingame {
+  overflow: hidden;
+  background-color: transparent;
+  width: min-content;
+  height: min-content;
+}
