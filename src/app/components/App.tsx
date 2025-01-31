@@ -13,7 +13,8 @@ export const App = () => {
 
   useEffect(() => {
     (async function preLoad() {
-      const currentWindow = await getCurrentWindow();
+      let pathname = (window.location.pathname).slice(1)
+      const currentWindow = await getCurrentWindow(pathname || null);
       setScreenName(currentWindow);
       log(
         `Request screen: ${currentWindow}`,

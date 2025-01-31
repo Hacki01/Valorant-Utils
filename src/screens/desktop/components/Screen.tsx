@@ -1,9 +1,9 @@
 import { useTranslation } from "react-i18next";
 import { DesktopHeader } from "./DesktopHeader";
 import "./styles/Screen.css";
-import { Feed } from "components/Feed";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootReducer } from "app/shared/rootReducer";
+import { setCatVisibility } from "screens/ingame/stores/ingame";
 
 //avoid the use of static text, use i18n instead, each language has its own text, and the text is stored in the
 //locales folder in the project root
@@ -14,6 +14,12 @@ const Screen = () => {
     (state: RootReducer) => state.background,
   );
 
+  const { isCatVisible } = useSelector(
+    (state: RootReducer) => state.ingame,
+  );
+
+  const dispatch = useDispatch()
+
   return (
     <div className='desktop'>
       <DesktopHeader />
@@ -22,26 +28,24 @@ const Screen = () => {
             {t("components.desktop.header")}
         </header>
         <main className={"desktop__main"}>
-          {t("components.desktop.main")}
-          <Feed
-            title="Events"
-            data={
-              events.length
-                ? JSON.stringify(events[events.length - 1])
-                : "No events yet"
-            }
-          />
-          <Feed
-            title="Infos"
-            data={
-              infos.length
-                ? JSON.stringify(infos[infos.length - 1])
-                : "No infos yet"
-            }
-          />
+          <div className={"desktop__content"}>
+            <span>Events</span>
+            {events.map((event, index) => (
+              <div key={index}>{ JSON.stringify(event)}</div>
+            ))}
+          </div>
+          <div className={"desktop__content"}>
+            <span>Infos</span>
+            {infos.map((info, index) => (
+              <div key={index}>{ JSON.stringify(info)}</div>
+            ))}
+          </div>
         </main>
         <aside className={"desktop__aside"}>
-          {t("components.desktop.aside")}
+          <input type="button" value="SetCatVisibility" onClick={() => {
+            dispatch(setCatVisibility(!isCatVisible))
+          }} />
+          {isCatVisible ? "true" : "false"}
         </aside>
         <footer className={"desktop__footer desktop__fit"}>
           {t("components.desktop.footer")}

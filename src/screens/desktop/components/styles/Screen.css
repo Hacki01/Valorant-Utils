@@ -8,7 +8,6 @@ body {
   font-size: var(--font-size);
   font-weight: var(--font-weight);
   color: var(--primary-color-text);
-  background-color: var(--background-color);
 }
 
 .desktop {
@@ -42,11 +41,16 @@ body {
   background: var(--neutral-2);
   grid-area: main;
   display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-direction: row;
+}
+.desktop__main__content {
+  display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
   justify-content: center;
   align-items: center;
-  padding: 20px;
 }
 .desktop__aside {
   background: var(--neutral-3);

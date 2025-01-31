@@ -54,6 +54,7 @@ const BackgroundWindow = () => {
 
   useEffect(() => {
     startApp("on initial load");
+    overwolf.settings.hotkeys.onHold.addListener(console.log);
     overwolf.games.onGameInfoUpdated.addListener(async (event) => {
       if (
         event.runningChanged &&

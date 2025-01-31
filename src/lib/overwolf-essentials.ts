@@ -16,13 +16,11 @@ async function obtainDeclaredWindow(
   });
 }
 
-async function getCurrentWindow() {
+async function getCurrentWindow(windowName: string | null): Promise<string> {
   if (isDev) {
     /* 
     settings, in_game, desktop, notification 
     */
-    let windowName
-    windowName = 'desktop'
     log(
       `Running in dev mode, returning ${windowName || WINDOW_NAMES.DESKTOP} window, you can change this in src/lib/overwolf-essentials.ts: getCurrent`,
       "src/lib/overwolf-essentials.ts",

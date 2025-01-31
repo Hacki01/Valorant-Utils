@@ -14,11 +14,26 @@
   },
   "permissions": [
     "Extensions",
-    "Streaming",
     "Profile",
+    "Hotkeys",
     "GameInfo"
   ],
   "data": {
+    "hotkeys": {
+      "show_ingame": {
+        "title": "Show Ingame Menu",
+        "action-type": "custom",
+        "default": "Ctrl+F5",
+        "passthrough": true
+      },
+      "show_cat": {
+        "title": "Show Ingame Menu",
+        "action-type": "custom",
+        "default": "F5",
+        "passthrough": true,
+        "hold": true
+      }
+    },
     "game_targeting": {
       "type": "dedicated",
       "game_ids": [
@@ -50,13 +65,12 @@
         "file": "Files/index.html",
         "native_window": true,
         "transparent": true,
-        "resizable": true,
         "size": {
           "width": 1200,
-          "height": 700
+          "height": 600
         },
         "min_size": {
-          "width": 1212,
+          "width": 900,
           "height": 400
         },
         "max_size": {
@@ -72,12 +86,15 @@
         "file": "Files/index.html",
         "in_game_only": true,
         "focus_game_takeover": "ReleaseOnHidden",
+        "focus_game_takeover_release_hotkeys": [
+          "show_Ingame"
+        ],
         "block_top_window_navigation": true,
         "transparent": true,
         "resizable": true,
         "size": {
-          "width": 400,
-          "height": 600
+          "width": 1920,
+          "height": 1080
         },
         "min_size": {
           "width": 0,
