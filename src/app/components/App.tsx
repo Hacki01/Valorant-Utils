@@ -2,7 +2,7 @@ import { useEffect, useState, Suspense } from "react";
 import { CurrentScreen } from "./CurrentScreen";
 import { Loading } from "components/Loading";
 import { getCurrentWindow } from "lib/overwolf-essentials";
-import "../shared/root.css";
+import "../../rootStyles/index.css"
 import { log } from "lib/log";
 
 //This is the main component of the app, it is the root of the app

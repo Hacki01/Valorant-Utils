@@ -19,19 +19,23 @@ const BackgroundWindow = () => {
   const { start, stop } = useGameEventProvider(
     {
       onInfoUpdates: (info) =>
+      {
         store.dispatch(
           setInfo({
             ...info,
             timestamp: Date.now(),
           })
-        ),
+        )
+      },
       onNewEvents: (events) =>
-        store.dispatch(
-          setEvent({
-            ...events,
-            timestamp: Date.now(),
-          })
-        ),
+        {
+          store.dispatch(
+            setEvent({
+              ...events,
+              timestamp: Date.now(),
+            })
+          )
+        },
     },
     REQUIRED_FEATURES,
     RETRY_TIMES,
@@ -42,8 +46,8 @@ const BackgroundWindow = () => {
       //if the desktop or ingame window is not ready we don't want to start the app
       if (!desktop || !ingame) return;
       log(reason, "src/screens/background/components/Screen.tsx", "startApp");
-      const hearthstone = await getValorantGame();
-      if (hearthstone) {
+      const valorant = await getValorantGame();
+      if (valorant) {
         await Promise.all([start(), ingame?.restore(), desktop?.minimize()]);
       } else {
         await Promise.all([stop(), desktop?.restore()]);
@@ -54,7 +58,6 @@ const BackgroundWindow = () => {
 
   useEffect(() => {
     startApp("on initial load");
-    overwolf.settings.hotkeys.onHold.addListener(console.log);
     overwolf.games.onGameInfoUpdated.addListener(async (event) => {
       if (
         event.runningChanged &&

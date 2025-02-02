@@ -4,6 +4,7 @@ body {
   width: 100%;
   margin: 0;
   padding: 0;
+  overflow: hidden;
   font-family: var(--font-family);
   font-size: var(--font-size);
   font-weight: var(--font-weight);
@@ -11,60 +12,13 @@ body {
 }
 
 .desktop {
+  width: 1024px;
+  height: 576px;
   background-color: var(--background-color);
 }
-
-.desktop__container {
-  display: grid;
-  grid-template-columns: 3fr 2fr;
-  grid-template-rows: 15vh 75vh 5vh;
-  grid-template-areas:
-    "header header"
-    "main aside"
-    "footer footer";
-}
-
-.desktop__fit {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: center;
-  align-items: center;
-  padding: 5px;
-}
-
-.desktop__header {
-  background: var(--neutral-1);
-  grid-area: header;
-}
-.desktop__main {
+.desktopContainer {
   background: var(--neutral-2);
-  grid-area: main;
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  flex-direction: row;
-}
-.desktop__main__content {
+  height: 100%;
   display: flex;
   flex-direction: column;
-  flex-wrap: nowrap;
-  justify-content: center;
-  align-items: center;
-}
-.desktop__aside {
-  background: var(--neutral-3);
-  grid-area: aside;
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  justify-content: center;
-  align-items: center;
-}
-
-.desktop__footer {
-  background: var(--background-color);
-  font-size: var(--font-size-small);
-  font-weight: 300;
-  grid-area: footer;
 }

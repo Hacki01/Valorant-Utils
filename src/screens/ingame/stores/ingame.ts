@@ -13,7 +13,6 @@ const ingameSlice = createSlice({
   initialState,
   reducers: {
     setCatVisibility(state, action: PayloadAction<boolean>) {
-      console.log("setCatVisibility", action.payload);
       state.isCatVisible = action.payload;
     },
   },

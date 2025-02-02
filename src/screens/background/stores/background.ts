@@ -4,6 +4,7 @@ interface Timestamp {
   timestamp: number;
 }
 type OwInfo =
+  | any 
   | overwolf.games.events.InfoUpdates2Event
   | overwolf.games.InstalledGameInfo;
 type OwEvent = overwolf.games.events.NewGameEvents;
@@ -13,11 +14,23 @@ type EventPayload = PayloadAction<Timestamp & OwEvent>;
 interface BackgroundState {
   events: Array<Timestamp & OwEvent>;
   infos: Array<Timestamp & OwInfo>;
+  match_info: {
+    map: string | null;
+    roster: any;
+    round_number: string | null;
+    score: {"won": string, "lost": string } | null;
+  }
 }
 
 const initialState: BackgroundState = {
   events: [],
   infos: [],
+  match_info: {
+    map: null,
+    roster: {},
+    round_number: null,
+    score: null
+  }
 };
 
 const backgroundSlice = createSlice({
@@ -28,7 +41,10 @@ const backgroundSlice = createSlice({
       state.events.push(action.payload);
     },
     setInfo(state, action: InfoPayload) {
-      state.infos.push(action.payload);
+      let info = action.payload;
+      state.infos.push(info);
+      /* ustawienie wartości if jest inna */
+      state.match_info.map = info.info?.match_info?.map || state.match_info.map;
     },
   },
 });

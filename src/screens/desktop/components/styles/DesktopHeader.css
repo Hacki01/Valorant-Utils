@@ -1,6 +1,5 @@
 .header {
   display: flex;
-  height: 4vh;
   align-items: center;
   padding: 0 0 0 5px;
   background-color: var(--background-color);
@@ -57,7 +56,7 @@
 }
 .header__control:hover,
 .header__control:active {
-  color: var(--color-hover);
+  background-color: var(--color-hover);
 }
 .header__control__close {
   --color-hover: var(--error-color);

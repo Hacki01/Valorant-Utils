@@ -23,13 +23,13 @@
       "show_ingame": {
         "title": "Show Ingame Menu",
         "action-type": "custom",
-        "default": "Ctrl+F5",
+        "default": "Alt+X",
         "passthrough": true
       },
       "show_cat": {
-        "title": "Show Ingame Menu",
+        "title": "Show a cat gif",
         "action-type": "custom",
-        "default": "F5",
+        "default": "F8",
         "passthrough": true,
         "hold": true
       }
@@ -66,16 +66,8 @@
         "native_window": true,
         "transparent": true,
         "size": {
-          "width": 1200,
-          "height": 600
-        },
-        "min_size": {
-          "width": 900,
-          "height": 400
-        },
-        "max_size": {
-          "width": 1920,
-          "height": 1080
+          "width": 1024,
+          "height": 576
         },
         "desktop_only": true,
         "block_top_window_navigation": true,
@@ -91,7 +83,6 @@
         ],
         "block_top_window_navigation": true,
         "transparent": true,
-        "resizable": true,
         "size": {
           "width": 1920,
           "height": 1080
