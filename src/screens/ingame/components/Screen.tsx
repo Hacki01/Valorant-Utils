@@ -15,7 +15,7 @@ const Screen = () => {
   
   if (isDev) {
     window.onkeydown = (e) => {
-      if (e.key === "f8") {
+      if (e.key === "F8") {
         dispatch(setCatVisibility(true))
       }
       // Add Alt+X handler
@@ -24,7 +24,7 @@ const Screen = () => {
       }
     }
     window.onkeyup = (e) => {
-      if (e.key === "f8") {
+      if (e.key === "F8") {
         dispatch(setCatVisibility(false))
       }
     }
