@@ -43,7 +43,7 @@ const Screen = () => {
   return (
     <div className="ingame">
       {isCatVisible ? 
-        <img className="catImage" width={300} height={300} alt='cat gif' src='https://media.tenor.com/RUCmdkzaIsoAAAAM/cat-wet.gif' />
+        <img className="catImage" width={1920} height={1080} alt='cat gif' src='https://media.tenor.com/RUCmdkzaIsoAAAAM/cat-wet.gif' />
         : null
       }
       {isMenuVisible ? <Menu/> : null}

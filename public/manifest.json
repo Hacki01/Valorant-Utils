@@ -19,6 +19,12 @@
     "GameInfo"
   ],
   "data": {
+    "extra-objects": {
+      "discordPlugin": {
+        "file": "plugins/discord-rich-presence.dll",
+        "class": "com.overwolf.discord.DiscordRichPresence"
+      }
+    },
     "hotkeys": {
       "show_ingame": {
         "title": "Show Ingame Menu",

@@ -94,7 +94,7 @@ export const DesktopHeader = () => {
         </button>
         <button
           className="header__icon header__control header__control__close"
-          onClick={backgroundWindow?.close}
+          onClick={desktopWindow?.close}
         >
           <svg>
             <use xlinkHref="#window-control_close" />

@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import {ValorantInfoUpdate, ValorantRanks} from "../../../types/valorant";
+import {ValorantInfoUpdate} from "../../../types/valorant";
 interface Timestamp {
   timestamp: number;
 }
@@ -23,7 +23,6 @@ interface MatchInfo {
     custom: boolean;
     ranked: string
   } | null;
-  rank: string | null;
 }
 
 interface BackgroundState {
@@ -41,7 +40,6 @@ const initialState: BackgroundState = {
     round_number: null,
     score: null,
     game_mode: null,
-    rank: null
   }
 };
 
@@ -57,14 +55,6 @@ function findRoster(info: ValorantInfoUpdate): number | null {
     }
   }
   return null
-}
-
-function getRank(rosterNumber : number) {
-  try {
-    return ValorantRanks[rosterNumber as keyof typeof ValorantRanks];
-  } catch (error) {
-    return ""
-  }
 }
 
 const backgroundSlice = createSlice({
@@ -91,7 +81,6 @@ const backgroundSlice = createSlice({
             round_number: VMI.round_number !== undefined ? VMI.round_number : state.matchInfo.round_number,
             score: VMI.score !== undefined ? VMI.score : state.matchInfo.score,
             game_mode: VMI.game_mode !== undefined ? VMI.game_mode : state.matchInfo.game_mode,
-            rank:  rosterNumber !== null ? getRank(rosterNumber) : ""
           };
         }
       }
