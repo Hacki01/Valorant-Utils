@@ -1,19 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
+import {ValorantInfoUpdate, ValorantRanks} from "../../../types/valorant";
 interface Timestamp {
   timestamp: number;
-}
-
-interface ValorantInfoUpdate extends overwolf.games.events.InfoUpdate2 {
-  match_info?: {
-    map?: string | null;
-    roster?: any | null;
-    round_number?: string | null;
-    score?: {
-      won: string;
-      lost: string;
-    } | null;
-  };
 }
 
 type OwInfo = 
@@ -22,12 +10,20 @@ type OwInfo =
 type OwEvent = overwolf.games.events.NewGameEvents;
 type InfoPayload = PayloadAction<Timestamp & OwInfo>;
 type EventPayload = PayloadAction<Timestamp & OwEvent>;
-
 interface MatchInfo {
   map: string | null;
   roster: any;
   round_number: string | null;
-  score: {"won": string, "lost": string } | null;
+  score: {
+    won: number,
+    lost: number 
+  } | null;
+  game_mode: {
+    mode: string;
+    custom: boolean;
+    ranked: string
+  } | null;
+  rank: string | null;
 }
 
 interface BackgroundState {
@@ -43,12 +39,32 @@ const initialState: BackgroundState = {
     map: null,
     roster: {},
     round_number: null,
-    score: null
+    score: null,
+    game_mode: null,
+    rank: null
   }
 };
 
 function isInfoUpdates2Event(info: OwInfo): info is overwolf.games.events.InfoUpdates2Event {
   return 'info' in info;
+}
+
+function findRoster(info: ValorantInfoUpdate): number | null {
+  if (!info.match_info) return null;
+  for (let i = 0; i <= 27; i++) {
+    if (info.match_info[`roster_${i}`]) {
+      return i;
+    }
+  }
+  return null
+}
+
+function getRank(rosterNumber : number) {
+  try {
+    return ValorantRanks[rosterNumber as keyof typeof ValorantRanks];
+  } catch (error) {
+    return ""
+  }
 }
 
 const backgroundSlice = createSlice({
@@ -61,18 +77,21 @@ const backgroundSlice = createSlice({
     setInfo(state, action: InfoPayload) {
       let payload = action.payload;
       state.infos.push(payload);
-      
       if (isInfoUpdates2Event(payload)) {
         const valorantInfo = payload.info as ValorantInfoUpdate;
-        const matchInfo = valorantInfo?.match_info;
-        if (matchInfo) {
+        const VMI = valorantInfo?.match_info;
+        const rosterNumber = findRoster(valorantInfo)
+        /* VMI - Valorant Match Info */
+        if (VMI) {
           state.matchInfo = {
             // If value is undefined, use previous value
             // If value is null, keep null
-            map: matchInfo.map !== undefined ? matchInfo.map : state.matchInfo.map,
-            roster: matchInfo.roster !== undefined ? matchInfo.roster : state.matchInfo.roster,
-            round_number: matchInfo.round_number !== undefined ? matchInfo.round_number : state.matchInfo.round_number,
-            score: matchInfo.score !== undefined ? matchInfo.score : state.matchInfo.score
+            map: VMI.map !== undefined ? VMI.map : state.matchInfo.map,
+            roster: rosterNumber !== null ? VMI[`roster_${rosterNumber}`] : state.matchInfo.roster,
+            round_number: VMI.round_number !== undefined ? VMI.round_number : state.matchInfo.round_number,
+            score: VMI.score !== undefined ? VMI.score : state.matchInfo.score,
+            game_mode: VMI.game_mode !== undefined ? VMI.game_mode : state.matchInfo.game_mode,
+            rank:  rosterNumber !== null ? getRank(rosterNumber) : ""
           };
         }
       }

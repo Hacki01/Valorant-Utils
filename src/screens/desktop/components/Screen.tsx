@@ -11,7 +11,7 @@ const Screen = () => {
     (state: RootReducer) => state.background,
   );
 
-  const {map,roster,round_number,score} = matchInfo
+  const {map,roster,round_number,score,rank} = matchInfo
 
   const dispatch = useDispatch();
   return (
@@ -22,7 +22,8 @@ const Screen = () => {
         <div>mapa:{map}</div>
         <div>runda:{round_number}</div>
         <div>roster:{JSON.stringify(roster)}</div>
-        <div>score:{JSON.stringify(score)}</div>
+        <div>Ranga: {rank}</div>
+        <div>Wynik:{JSON.stringify(score)}</div>
         <div>{JSON.stringify(matchInfo)}</div>
         <input type="button" disabled value="TEST" onClick={() => {
           dispatch({ type: "backgroundScreen/testFunction" });
