@@ -10,7 +10,7 @@ type OwInfo =
 type OwEvent = overwolf.games.events.NewGameEvents;
 type InfoPayload = PayloadAction<Timestamp & OwInfo>;
 type EventPayload = PayloadAction<Timestamp & OwEvent>;
-interface MatchInfo {
+export interface MatchInfo {
   map: string | null;
   roster: any;
   round_number: string | null;
@@ -62,7 +62,9 @@ const backgroundSlice = createSlice({
   initialState,
   reducers: {
     setEvent(state, action: EventPayload) {
-      state.events.push(action.payload);
+      let payload = action.payload
+      state.events.push(payload);
+      console.log(payload.events)
     },
     setInfo(state, action: InfoPayload) {
       let payload = action.payload;
@@ -77,10 +79,12 @@ const backgroundSlice = createSlice({
             // If value is undefined, use previous value
             // If value is null, keep null
             map: VMI.map !== undefined ? VMI.map : state.matchInfo.map,
-            roster: rosterNumber !== null ? VMI[`roster_${rosterNumber}`] : state.matchInfo.roster,
+            roster: rosterNumber !== null ? JSON.parse(VMI[`roster_${rosterNumber}`]) : state.matchInfo.roster,
             round_number: VMI.round_number !== undefined ? VMI.round_number : state.matchInfo.round_number,
             score: VMI.score !== undefined ? VMI.score : state.matchInfo.score,
-            game_mode: VMI.game_mode !== undefined ? VMI.game_mode : state.matchInfo.game_mode,
+            game_mode: VMI.game_mode !== undefined ? (
+              VMI.game_mode !== null ? JSON.parse(VMI.game_mode.toString()) : null
+            ) : state.matchInfo.game_mode,
           };
         }
       }
