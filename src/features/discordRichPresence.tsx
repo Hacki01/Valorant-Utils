@@ -3,6 +3,17 @@ import { OverwolfPlugin } from "lib/overwolfplugin";
 let _discordRichPresence: any;
 let isDiscordReady = false
 
+export interface Presence {
+  details: string;
+  state: string;
+  assets: {
+    large_image: string;
+    large_text: string;
+    small_image?: string;
+    small_text?: string;
+  }
+}
+
 export function isReady() {
   return isDiscordReady || false
 }

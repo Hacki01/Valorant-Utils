@@ -1,11 +1,10 @@
 export enum ValorantModes {
-  Bomb = "Unrated/Competitive",
-  "Quick Bomb" = "Spike Rush",
-  Deathmatch = "Deathmatch",
-  Escalation = "Escalation",
-  Swift = "Swiftplay",
-  Range = "Range",
-  "Team deathmatch" = "Team Deathmatch"
+  quick_bomb = "Spike Rush",
+  deathmatch = "Deathmatch",
+  escalation = "Escalation",
+  swift = "Swiftplay",
+  range = "Range",
+  team_deathmatch = "Team Deathmatch"
 }
 
 export enum ValorantMaps {
@@ -20,7 +19,7 @@ export enum ValorantMaps {
   Pitt = "Pearl",
   Jam = "Lotus",
   Juliett = "Sunset",
-  Range = "Practice Range",
+  Range = "Range",
   HURM_Alley = "District",
   HURM_Yard = "Piazza",
   HURM_Bowl = "Kasbah",
@@ -28,76 +27,60 @@ export enum ValorantMaps {
   HURM_HighTide = "Glitch",
 }
 
-export enum ValorantCharacters {
-  Clay = "Raze",
-  Pandemic = "Viper",
-  Wraith = "Omen",
-  Hunter = "Sova",
-  Thorne = "Sage",
-  Phoenix = "Phoenix",
-  Wushu = "Jett",
-  Gumshoe = "Cypher",
-  Sarge = "Brimstone",
-  Breach = "Breach",
-  Vampire = "Reyna",
-  Killjoy = "Killjoy",
-  Guide = "Skye",
-  Stealth = "Yoru",
-  Rift = "Astra",
-  Grenadie = 'KAY/O',
-  Deadeye = "Chamber",
-  Sprinter = "Neon",
-  BountyHunter = "Fade",
-  Mage = "Harbor",
-  AggroBot = "Gekko",
-  Cable = "Deadlock",
-  Sequoia = "Iso",
-  Smonk = "Clove",
-  Nox = "Vyse",
-  Cashew = "Tejo",
+export enum ValorantAgents {
+  Clay_PC_C = "Raze",
+  Pandemic_PC_C = "Viper",
+  Wraith_PC_C = "Omen",
+  Hunter_PC_C = "Sova",
+  Thorne_PC_C = "Sage",
+  Phoenix_PC_C = "Phoenix",
+  Wushu_PC_C = "Jett",
+  Gumshoe_PC_C = "Cypher",
+  Sarge_PC_C = "Brimstone",
+  Breach_PC_C = "Breach",
+  Vampire_PC_C = "Reyna",
+  Killjoy_PC_C = "Killjoy",
+  Guide_PC_C = "Skye",
+  Stealth_PC_C = "Yoru",
+  Rift_PC_C = "Astra",
+  Grenadie_PC_C = 'KAY/O',
+  Deadeye_PC_C = "Chamber",
+  Sprinter_PC_C = "Neon",
+  BountyHunter_PC_C = "Fade",
+  Mage_PC_C = "Harbor",
+  AggroBot_PC_C = "Gekko",
+  Cable_PC_C = "Deadlock",
+  Sequoia_PC_C = "Iso",
+  Smonk_PC_C = "Clove",
+  Nox_PC_C = "Vyse",
+  Cashew_PC_C = "Tejo",
 }
 
 export interface ValorantInfoUpdate extends overwolf.games.events.InfoUpdate2 {
   match_info?: {
     map?: string | null;
-    roster_0?: any | null;
-    roster_1?: any | null;
-    roster_2?: any | null;
-    roster_3?: any | null;
-    roster_4?: any | null;
-    roster_5?: any | null;
-    roster_6?: any | null;
-    roster_7?: any | null;
-    roster_8?: any | null;
-    roster_9?: any | null;
-    roster_10?: any | null;
-    roster_11?: any | null;
-    roster_12?: any | null;
-    roster_13?: any | null;
-    roster_14?: any | null;
-    roster_15?: any | null;
-    roster_16?: any | null;
-    roster_17?: any | null;
-    roster_18?: any | null;
-    roster_19?: any | null;
-    roster_20?: any | null;
-    roster_21?: any | null;
-    roster_22?: any | null;
-    roster_23?: any | null;
-    roster_24?: any | null;
-    roster_25?: any | null;
-    roster_26?: any | null;
-    roster_27?: any | null;
-    round_number?: string | null;
-    score?: {
-      won: number;
-      lost: number;
+    roundNumber?: string | null;
+    score?: string | null;
+    game_mode?: string | null;
+    escalationStage?: {
+      attacker: string | null;
+      defender: string | null;
     } | null;
-    game_mode?: {
-      mode: string;
-      custom: boolean;
-      ranked: string
-    } | null;
+    team?: string | null;
     [key: string]: any;
   };
+  me?: {
+    agent?: string | null;
+  };
+  game_info?: {
+    scene?: string | null;
+  };
+  kill?: {
+    kills: string | null;
+    headshots: string | null;
+    assists: string | null;
+  }
+  death?: {
+    deaths: string | null;
+  }
 }

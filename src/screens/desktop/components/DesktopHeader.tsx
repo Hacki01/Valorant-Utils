@@ -8,7 +8,7 @@ import { classNames, isDev } from "lib/utils";
 import { SVGComponent } from "./DesktopHeaderSVG";
 import "./styles/DesktopHeader.css";
 
-const { DESKTOP, BACKGROUND } = WINDOW_NAMES;
+const { DESKTOP, /* BACKGROUND */ } = WINDOW_NAMES;
 
 const handleDiscordClick = () => {
   if (isDev) return window.open("https://discord.gg/f6kHMT4A9F");
@@ -18,7 +18,7 @@ const handleDiscordClick = () => {
 export const DesktopHeader = () => {
   const [maximized, setMaximize] = useState(false);
   const [desktopWindow] = useWindow(DESKTOP, DISPLAY_OVERWOLF_HOOKS_LOGS);
-  const [backgroundWindow] = useWindow(BACKGROUND, DISPLAY_OVERWOLF_HOOKS_LOGS);
+ /*  const [backgroundWindow] = useWindow(BACKGROUND, DISPLAY_OVERWOLF_HOOKS_LOGS); */
   const { onDragStart, onMouseMove, setCurrentWindowID } = useDrag(
     null,
     DISPLAY_OVERWOLF_HOOKS_LOGS,

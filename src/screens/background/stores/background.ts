@@ -12,49 +12,80 @@ type InfoPayload = PayloadAction<Timestamp & OwInfo>;
 type EventPayload = PayloadAction<Timestamp & OwEvent>;
 export interface MatchInfo {
   map: string | null;
-  roster: any;
-  round_number: string | null;
+  roundNumber: string | null;
   score: {
-    won: number,
+    won: number
     lost: number 
-  } | null;
+  } | null
   game_mode: {
-    mode: string;
-    custom: boolean;
+    mode: string
+    custom: boolean
     ranked: string
-  } | null;
+  } | null
+  escalationStage: {
+    attacker: number
+    defender: number
+  } | null
+  team: string | null
+}
+
+export interface GameInfo {
+  scene: string | null;
+}
+
+export interface Me {
+  agent: string | null;
+}
+
+export interface Death {
+  deaths: string | null
+}
+
+export interface Kill {
+  kills: string | null
+  headshots: string | null
+  assists: string | null
 }
 
 interface BackgroundState {
-  events: Array<Timestamp & OwEvent>;
-  infos: Array<Timestamp & OwInfo>;
-  matchInfo: MatchInfo;
+  events: Array<Timestamp & OwEvent>
+  infos: Array<Timestamp & OwInfo>
+  matchInfo: MatchInfo
+  gameInfo: GameInfo
+  me: Me
+  kill: Kill
+  death: Death
 }
 
 const initialState: BackgroundState = {
   events: [],
   infos: [],
+  gameInfo:{
+    scene: null
+  },
+  me: {
+    agent: null
+  },
   matchInfo: {
     map: null,
-    roster: {},
-    round_number: null,
+    roundNumber: null,
     score: null,
     game_mode: null,
+    escalationStage: null,
+    team: null
+  },
+  kill: {
+    kills: null,
+    headshots: null,
+    assists: null
+  },
+  death: {
+    deaths: null
   }
 };
 
 function isInfoUpdates2Event(info: OwInfo): info is overwolf.games.events.InfoUpdates2Event {
   return 'info' in info;
-}
-
-function findRoster(info: ValorantInfoUpdate): number | null {
-  if (!info.match_info) return null;
-  for (let i = 0; i <= 27; i++) {
-    if (info.match_info[`roster_${i}`]) {
-      return i;
-    }
-  }
-  return null
 }
 
 const backgroundSlice = createSlice({
@@ -64,28 +95,38 @@ const backgroundSlice = createSlice({
     setEvent(state, action: EventPayload) {
       let payload = action.payload
       state.events.push(payload);
-      console.log(payload.events)
     },
     setInfo(state, action: InfoPayload) {
       let payload = action.payload;
+      console.log(payload)
       state.infos.push(payload);
       if (isInfoUpdates2Event(payload)) {
         const valorantInfo = payload.info as ValorantInfoUpdate;
         const VMI = valorantInfo?.match_info;
-        const rosterNumber = findRoster(valorantInfo)
         /* VMI - Valorant Match Info */
         if (VMI) {
           state.matchInfo = {
             // If value is undefined, use previous value
             // If value is null, keep null
             map: VMI.map !== undefined ? VMI.map : state.matchInfo.map,
-            roster: rosterNumber !== null ? JSON.parse(VMI[`roster_${rosterNumber}`]) : state.matchInfo.roster,
-            round_number: VMI.round_number !== undefined ? VMI.round_number : state.matchInfo.round_number,
-            score: VMI.score !== undefined ? VMI.score : state.matchInfo.score,
-            game_mode: VMI.game_mode !== undefined ? (
-              VMI.game_mode !== null ? JSON.parse(VMI.game_mode.toString()) : null
-            ) : state.matchInfo.game_mode,
+            roundNumber: VMI.roundNumber !== undefined ? VMI.round_number : state.matchInfo.roundNumber,
+            score: VMI.score !== undefined  ? (VMI.score == null ? null : JSON.parse(VMI.score)) : state.matchInfo.score,
+            game_mode: VMI.game_mode !== undefined ? (VMI.game_mode == null ? null : JSON.parse(VMI.game_mode) ): state.matchInfo.game_mode,
+            escalationStage: VMI.escalation_stage !== undefined ? (VMI.escalation_stage == null ? null : JSON.parse(VMI.escalation_stage)) : state.matchInfo.escalationStage,
+            team: VMI.team !== undefined ? VMI.team : state.matchInfo.team
           };
+        }
+        if (valorantInfo?.me?.agent !== undefined) {
+          state.me.agent = valorantInfo.me.agent;
+        }
+        if (valorantInfo?.game_info?.scene !== undefined) {
+          state.gameInfo.scene = valorantInfo.game_info.scene;
+        }
+        if (valorantInfo.kill !== undefined) {
+          state.kill = valorantInfo.kill;
+        }
+        if (valorantInfo.death !== undefined) {
+          state.death = valorantInfo.death;
         }
       }
       overwolf.games.events.getInfo(function(info) {
