@@ -39,8 +39,6 @@ jobs:
         id: pack
         run: npm run package-overwolf
 
-      - name: 📂 Check files after compression
-        run: ls -la build/
 
       - name: ☁️ Upload to Overwolf
         run: |
@@ -55,6 +53,9 @@ jobs:
           OW_CLI_EMAIL: ${{ secrets.OW_CLI_EMAIL }}
           OW_CLI_API_KEY: ${{ secrets.OW_CLI_API_KEY }}
           PRE_RELEASE_CHANNEL: ${{ vars.PRE_RELEASE_CHANNEL }}
+
+      - name: 📂 Check files after compression
+        run: ls -la build/
 
       - name: 📦 Read Current Version
         id: read_current_version
@@ -72,8 +73,8 @@ jobs:
           gh release upload ${{ env.RELEASE_VERSION }} ${{ env.FILES }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NAME: "Valorant Utils ${{steps.read_current_version.outputs.full_version}}"
-          FILES: build/Valorant\ Utils\ ${{steps.read_current_version.outputs.version}}.signed.opk unpacked_extension.${{steps.read_current_version.outputs.full_version}}.zip
+          NAME: "Valorant Utils${{steps.read_current_version.outputs.full_version}}"
+          FILES: build/Valorant\ Utils_${{steps.read_current_version.outputs.version}}.signed.opk unpacked_extension.${{steps.read_current_version.outputs.full_version}}.zip
           RELEASE_VERSION: ${{ steps.read_current_version.outputs.full_version }}
 
   create-github-release:
