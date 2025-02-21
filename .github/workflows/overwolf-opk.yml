@@ -72,8 +72,8 @@ jobs:
           gh release upload ${{ env.RELEASE_VERSION }} ${{ env.FILES }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NAME: "Overwolf Modern React Boilerplate ${{steps.read_current_version.outputs.full_version}}"
-          FILES: build/Overwolf\ Modern\ React\ Boilerplate-v4_${{steps.read_current_version.outputs.version}}.signed.opk unpacked_extension.${{steps.read_current_version.outputs.full_version}}.zip
+          NAME: "Valorant Utils ${{steps.read_current_version.outputs.full_version}}"
+          FILES: build/Valorant\ Utils\ ${{steps.read_current_version.outputs.version}}.signed.opk unpacked_extension.${{steps.read_current_version.outputs.full_version}}.zip
           RELEASE_VERSION: ${{ steps.read_current_version.outputs.full_version }}
 
   create-github-release:
