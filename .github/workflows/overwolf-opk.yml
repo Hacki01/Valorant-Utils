@@ -47,6 +47,7 @@ jobs:
           echo "Uploading to Overwolf"
           npm i -g @overwolf/ow-cli
           ow opk pack build/
+          mv *.opk build/
           ow opk sign build/*.opk
           ow opk release $(ow opk upload build/*.signed.opk -c ${{ vars.PRE_RELEASE_CHANNEL }} -w) -c ${{ vars.PRE_RELEASE_CHANNEL }} -p 100
 
