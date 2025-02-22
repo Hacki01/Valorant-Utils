@@ -6,6 +6,10 @@ let isDiscordReady = false
 export interface Presence {
   details: string;
   state: string;
+  timestamps?: {
+    start: number
+    end: number | null
+  }
   assets: {
     large_image: string;
     large_text: string;
@@ -15,10 +19,12 @@ export interface Presence {
 }
 
 export function isReady() {
-  return isDiscordReady || false
+  return isDiscordReady
 }
 
 export function dispose() {
+  if (!isReady()) return
+  isDiscordReady = false
   // Dispose connection to Discord
   _discordRichPresence.dispose();
 }
@@ -66,6 +72,7 @@ export async function initialize() {
 }
 
 export function setPresence(presence: any) {
+  if (!isReady()) return
   try {
     _discordRichPresence.setPresence(presence);
   } catch (e) {

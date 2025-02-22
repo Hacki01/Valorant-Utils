@@ -95,6 +95,7 @@ const backgroundSlice = createSlice({
     setEvent(state, action: EventPayload) {
       let payload = action.payload
       state.events.push(payload);
+      console.log(payload)
     },
     setInfo(state, action: InfoPayload) {
       let payload = action.payload;
