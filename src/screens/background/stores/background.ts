@@ -1,5 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {ValorantInfoUpdate} from "../../../types/valorant";
+import { dispose, initialize } from "features/discordRichPresence";
+import { setIngamePresence } from "../components/ValorantPresence";
 interface Timestamp {
   timestamp: number;
 }
@@ -50,6 +52,7 @@ export interface Kill {
 interface BackgroundState {
   events: Array<Timestamp & OwEvent>
   infos: Array<Timestamp & OwInfo>
+  displayDRP: boolean
   matchInfo: MatchInfo
   gameInfo: GameInfo
   me: Me
@@ -60,6 +63,7 @@ interface BackgroundState {
 const initialState: BackgroundState = {
   events: [],
   infos: [],
+  displayDRP: true,
   gameInfo:{
     scene: null
   },
@@ -92,6 +96,16 @@ const backgroundSlice = createSlice({
   name: "backgroundScreen",
   initialState,
   reducers: {
+    setDisplayForDRP(state, action: PayloadAction<boolean>) {
+      state.displayDRP = action.payload;
+      if (action.payload) {
+        initialize().then(() => {
+          setIngamePresence(state.matchInfo, state.me, state.gameInfo, state.kill);
+        });
+      }else{
+        dispose();
+      }
+    },
     setEvent(state, action: EventPayload) {
       let payload = action.payload
       state.events.push(payload);
@@ -134,12 +148,9 @@ const backgroundSlice = createSlice({
         console.log(info);
       });
     },
-    testFunction(state) {
-      return state;
-    }
   },
 });
 
-export const { setEvent, setInfo } = backgroundSlice.actions;
+export const { setEvent, setInfo, setDisplayForDRP } = backgroundSlice.actions;
 
 export default backgroundSlice.reducer;

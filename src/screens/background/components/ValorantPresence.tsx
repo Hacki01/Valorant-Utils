@@ -1,4 +1,10 @@
-import { Presence, setPresence } from "features/discordRichPresence";
+import { RootReducer } from "app/shared/rootReducer";
+import { useSelector } from "react-redux";
+import { dispose, Presence } from "features/discordRichPresence";
+import { getValorantGame } from "lib/games";
+import { useCallback, useEffect } from "react";
+
+import { initialize, isReady, setPresence } from "features/discordRichPresence";
 import { GameInfo, Kill, MatchInfo, Me } from "screens/background/stores/background";
 import { ValorantAgents, ValorantMaps, ValorantModes } from "types/valorant";
 
@@ -18,6 +24,9 @@ function setMainMenuPresence() {
 
 
 export function setIngamePresence(matchInfo: MatchInfo, me: Me, gameInfo: GameInfo, kill:Kill) {
+  if (!isReady()) return initialize().then(() => {
+    setIngamePresence(matchInfo,me,gameInfo,kill)
+  });
   if (!matchInfo.map || !matchInfo.game_mode) return setMainMenuPresence()
   let map = ValorantMaps[matchInfo.map as keyof typeof ValorantMaps] as string
   let gamemode = matchInfo.game_mode.mode
@@ -36,7 +45,7 @@ export function setIngamePresence(matchInfo: MatchInfo, me: Me, gameInfo: GameIn
       case "bomb":
       case "swift":
       case "quick_bomb":
-        state = `${matchInfo?.score?.won  || 0}-${matchInfo?.score?.lost || 0}`
+        state = `${matchInfo?.score?.won  || 0} - ${matchInfo?.score?.lost || 0}`
         break;
       case "deathmatch":
         state = `${kill.kills || 0} Kills`
@@ -52,7 +61,7 @@ export function setIngamePresence(matchInfo: MatchInfo, me: Me, gameInfo: GameIn
         }
         break;
       case "team_deathmatch":
-        /* Add a sum of team and enemiesw kills */
+        /* Add a sum of team and enemies kills */
         state = `${kill.kills || 0} Kills`
         break;
     }
@@ -92,4 +101,27 @@ export function setIngamePresence(matchInfo: MatchInfo, me: Me, gameInfo: GameIn
   }
 
   setPresence(presence)
+}
+
+
+export default function ValorantPresence() {
+  const { matchInfo, me ,gameInfo, kill, displayDRP } = useSelector(
+    (state: RootReducer) => state.background,
+  );
+
+  const startPresence = useCallback(async () => {
+    if (!displayDRP) return
+    const valorant = await getValorantGame();
+    if (valorant) {
+      setIngamePresence(matchInfo,me,gameInfo,kill)
+    } else {
+      dispose();
+    }
+  },[matchInfo,me,gameInfo,kill,displayDRP])
+
+  useEffect(() => {
+    startPresence()
+  },[startPresence])
+
+  return null;
 }
