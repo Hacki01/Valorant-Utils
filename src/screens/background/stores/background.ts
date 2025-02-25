@@ -97,12 +97,19 @@ const backgroundSlice = createSlice({
   initialState,
   reducers: {
     setDisplayForDRP(state, action: PayloadAction<boolean>) {
-      state.displayDRP = action.payload;
       if (action.payload) {
-        initialize().then(() => {
-          setIngamePresence(state.matchInfo, state.me, state.gameInfo, state.kill);
-        });
-      }else{
+        // Don't set state until initialization completes successfully
+        initialize()
+          .then(() => {
+            state.displayDRP = true;
+            setIngamePresence(state.matchInfo, state.me, state.gameInfo, state.kill);
+          })
+          .catch(error => {
+            console.error('[DRP] Failed to initialize:', error);
+            state.displayDRP = false;
+          });
+      } else {
+        state.displayDRP = false;
         dispose();
       }
     },

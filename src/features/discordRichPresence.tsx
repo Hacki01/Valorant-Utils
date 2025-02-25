@@ -1,6 +1,6 @@
 import { OverwolfPlugin } from "lib/overwolfplugin";
 
-let _discordRichPresence: any;
+let discordRichPresence: any;
 let isDiscordReady = false
 
 export interface Presence {
@@ -26,7 +26,7 @@ export function dispose() {
   if (!isReady()) return
   isDiscordReady = false
   // Dispose connection to Discord
-  _discordRichPresence.dispose();
+  discordRichPresence.dispose();
 }
 
 async function createPlugin() {
@@ -39,7 +39,8 @@ async function createPlugin() {
     plugin.initialize(async (status: any) => {
       if (status === true) {
         try {
-          _discordRichPresence = await plugin.get();
+          discordRichPresence = await plugin.get();
+          isDiscordReady = true
           console.log('[discord] Plugin loaded!', status);
           resolve(true);
         } catch (error) {
@@ -54,17 +55,17 @@ async function createPlugin() {
 export async function initialize() {
   if (isReady()) return
   try {
-    await createPlugin();
+    await createPlugin().then(() => {
+      discordRichPresence.initApp('1341151669777469550');
+      console.log('[discord] Plugin initialized!');
+    });
 
     // Registering the event listeners
-    /* _discordRichPresence.onReady.addListener(msg => {
+    /* discordRichPresence.onReady.addListener(msg => {
     }); */
-    /* _discordRichPresence.onError.addListener(msg => console.log(JSON.stringify(msg)));
-    _discordRichPresence.onPresenceUpdate.addListener(msg => console.log(JSON.stringify(msg))); */
+    /* discordRichPresence.onError.addListener(msg => console.log(JSON.stringify(msg)));
+    discordRichPresence.onPresenceUpdate.addListener(msg => console.log(JSON.stringify(msg))); */
 
-    _discordRichPresence.initApp('1341151669777469550');
-    isDiscordReady = true
-    console.log('[discord] Plugin initialized!');
   } catch (error) {
     console.log(`[discord] Error initializing plugin!\r\n${error}`);
     console.error(error);
@@ -74,7 +75,7 @@ export async function initialize() {
 export function setPresence(presence: any) {
   if (!isReady()) return
   try {
-    _discordRichPresence.setPresence(presence);
+    discordRichPresence.setPresence(presence);
   } catch (e) {
     console.log(e);
   }
@@ -83,7 +84,7 @@ export function setPresence(presence: any) {
 export function clearPresence() {
   if (!isReady()) return
   try {
-    //_discordRichPresence.clearPresence([]);
+    //discordRichPresence.clearPresence([]);
   } catch (e) {
     console.log(e);
   }

@@ -1,7 +1,7 @@
 import { RootReducer } from "app/shared/rootReducer";
 import { useSelector } from "react-redux";
 import { dispose, Presence } from "features/discordRichPresence";
-import { getValorantGame } from "lib/games";
+import { getValorantGame, VALORANT_CLASS_ID } from "lib/games";
 import { useCallback, useEffect } from "react";
 
 import { initialize, isReady, setPresence } from "features/discordRichPresence";
@@ -118,6 +118,25 @@ export default function ValorantPresence() {
       dispose();
     }
   },[matchInfo,me,gameInfo,kill,displayDRP])
+
+  useEffect(() => {
+    startPresence()
+    overwolf.games.onGameInfoUpdated.addListener(async (event) => {
+      if (
+        event.runningChanged &&
+        event.gameInfo?.classId === VALORANT_CLASS_ID
+      ) {
+        startPresence()
+      }
+    });
+    overwolf.extensions.onAppLaunchTriggered.addListener(() => {
+      startPresence()
+    });
+    return () => {
+      overwolf.games.onGameInfoUpdated.removeListener(() => {});
+      overwolf.extensions.onAppLaunchTriggered.removeListener(() => {});
+    };
+  }, [startPresence]);
 
   useEffect(() => {
     startPresence()

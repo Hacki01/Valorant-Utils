@@ -18,7 +18,6 @@ const BackgroundWindow = () => {
   const [desktop] = useWindow(DESKTOP, DISPLAY_OVERWOLF_HOOKS_LOGS);
   const [ingame] = useWindow(INGAME, DISPLAY_OVERWOLF_HOOKS_LOGS);
 
-
   const { start, stop } = useGameEventProvider(
     {
       onInfoUpdates: (info) =>
@@ -79,7 +78,6 @@ const BackgroundWindow = () => {
       overwolf.extensions.onAppLaunchTriggered.removeListener(() => {});
     };
   }, [startApp]);
-
   return <ValorantPresence />;
 };
 
