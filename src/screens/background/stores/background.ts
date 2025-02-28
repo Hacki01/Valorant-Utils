@@ -95,11 +95,7 @@ const backgroundSlice = createSlice({
   initialState,
   reducers: {
     setDisplayForDRP(state, action: PayloadAction<boolean>) {
-      if (action.payload) {
-        state.displayDRP = true;
-      } else {
-        state.displayDRP = false;
-      }
+      state.displayDRP = action.payload;
     },
     setEvent(state, action: EventPayload) {
       let payload = action.payload
@@ -113,7 +109,6 @@ const backgroundSlice = createSlice({
       if (isInfoUpdates2Event(payload)) {
         const VI = payload.info as ValorantInfoUpdate;
         const VMI = VI?.match_info;
-        /* VMI - Valorant Match Info */
         if (VMI) {
           state.matchInfo = {
             // If value is undefined, use previous value
