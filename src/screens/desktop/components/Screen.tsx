@@ -5,9 +5,20 @@ import { RootReducer } from "app/shared/rootReducer";
 
 import { setDisplayForDRP } from "../../background/stores/background";
 import { getPresence } from "screens/background/components/ValorantPresence";
+import { Presence } from "features/discordRichPresence";
 
 //avoid the use of static text, use i18n instead, each language has its own text, and the text is stored in the
 //locales folder in the project root
+
+const PresencePreview = ({ presence } : { presence: Presence}) => {
+  return <div className={"presencePreview"}>
+    <div className={"presenceMap"}>Map: {presence.assets.large_text}</div>
+    <div className={"presenceAgent"}>Agent: {presence.assets.small_text || "No agent"}</div>
+    <div className={"presenceDetails"}>{presence.details}</div>
+    <div className={"presenceState"}>{presence.state}</div>
+  </div>
+}
+
 const Screen = () => {
 
   const { displayDRP, matchInfo, me, gameInfo, kill } = useSelector(
@@ -25,12 +36,9 @@ const Screen = () => {
       <DesktopHeader />
       <div className={"desktopContainer"}>
         <input type='button' onClick={() => {dispatch(setDisplayForDRP(!displayDRP))}} value={(displayDRP ? "Disable" : "Enable") + " DRP"}></input>
-        <div className={"presencePreview"}>
-          <div className={"presenceMap"}>Map: {presence.assets.large_text}</div>
-          <div className={"presenceAgent"}>Agent: {presence.assets.small_text || "No agent"}</div>
-          <div className={"presenceDetails"}>{presence.details}</div>
-          <div className={"presenceState"}>{presence.state}</div>
-        </div>
+        {
+          displayDRP ? <PresencePreview presence={presence} /> : <div>DRP is disabled</div>  
+        }
       </div>
     </div>
   );
