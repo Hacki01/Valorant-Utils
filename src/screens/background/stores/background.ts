@@ -111,8 +111,8 @@ const backgroundSlice = createSlice({
       console.log(payload)
       state.infos.push(payload);
       if (isInfoUpdates2Event(payload)) {
-        const valorantInfo = payload.info as ValorantInfoUpdate;
-        const VMI = valorantInfo?.match_info;
+        const VI = payload.info as ValorantInfoUpdate;
+        const VMI = VI?.match_info;
         /* VMI - Valorant Match Info */
         if (VMI) {
           state.matchInfo = {
@@ -126,17 +126,21 @@ const backgroundSlice = createSlice({
             team: VMI.team !== undefined ? VMI.team : state.matchInfo.team
           };
         }
-        if (valorantInfo?.me?.agent !== undefined) {
-          state.me.agent = valorantInfo.me.agent;
+        if (VI?.me?.agent !== undefined) {
+          state.me.agent = VI.me.agent;
         }
-        if (valorantInfo?.game_info?.scene !== undefined) {
-          state.gameInfo.scene = valorantInfo.game_info.scene;
+        if (VI?.game_info?.scene !== undefined) {
+          state.gameInfo.scene = VI.game_info.scene;
         }
-        if (valorantInfo.kill !== undefined) {
-          state.kill = valorantInfo.kill;
+        if (VI.kill !== undefined) {
+          state.kill = {
+            kills: VI.kill.kills !== undefined ? VI.kill.kills : state.kill.kills,
+            headshots: VI.kill.headshots !== undefined ? VI.kill.headshots : state.kill.headshots,
+            assists: VI.kill.assists !== undefined ? VI.kill.assists : state.kill.assists,
+          }
         }
-        if (valorantInfo.death !== undefined) {
-          state.death = valorantInfo.death;
+        if (VI.death !== undefined) {
+          state.death = VI.death;
         }
       }
       overwolf.games.events.getInfo(function(info) {

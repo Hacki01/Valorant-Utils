@@ -22,3 +22,22 @@ body {
   display: flex;
   flex-direction: column;
 }
+
+.presencePreview{
+  padding: 2px;
+  display: flex;
+  background-color: #131313;
+  border-radius: 5px;
+  margin: 5px;
+}
+
+input{
+  width: 300px;
+  background:transparent;
+  border: 2px solid white;
+  color: white;
+  padding: 2px;
+}
+input:hover{
+  background-color: black;
+}
