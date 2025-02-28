@@ -1,16 +1,15 @@
 import { RootReducer } from "app/shared/rootReducer";
 import { useSelector } from "react-redux";
-import { dispose, Presence } from "features/discordRichPresence";
 import { getValorantGame, VALORANT_CLASS_ID } from "lib/games";
 import { useCallback, useEffect } from "react";
 
-import { initialize, isReady, setPresence } from "features/discordRichPresence";
+import { initialize, isReady, setPresence,  dispose, Presence } from "features/discordRichPresence";
 import { GameInfo, Kill, MatchInfo, Me } from "screens/background/stores/background";
 import { ValorantAgents, ValorantMaps, ValorantModes } from "types/valorant";
 
 let gameStartTime : number | null = null
 
-function setMainMenuPresence() {
+function getMainMenuPresence() {
   let presence : Presence = {
     details: "Main Menu",
     state: "Idle",
@@ -19,15 +18,12 @@ function setMainMenuPresence() {
       large_text: "In main menu",
     }
   }
-  setPresence(presence)
+  return presence
 }
 
-
-export function setIngamePresence(matchInfo: MatchInfo, me: Me, gameInfo: GameInfo, kill:Kill) {
-  if (!isReady()) return initialize().then(() => {
-    setIngamePresence(matchInfo,me,gameInfo,kill)
-  });
-  if (!matchInfo.map || !matchInfo.game_mode) return setMainMenuPresence()
+export function getPresence(matchInfo: MatchInfo, me: Me, gameInfo: GameInfo, kill:Kill) {
+  let presence : Presence = getMainMenuPresence()
+  if (!matchInfo.map || !matchInfo.game_mode) return presence
   let map = ValorantMaps[matchInfo.map as keyof typeof ValorantMaps] as string
   let gamemode = matchInfo.game_mode.mode
   let gameScene = gameInfo.scene
@@ -73,10 +69,7 @@ export function setIngamePresence(matchInfo: MatchInfo, me: Me, gameInfo: GameIn
     gamemode = ValorantModes[gamemode as keyof typeof ValorantModes]
   }
 
-
-
-
-  let presence : Presence = {
+  presence = {
     details: custom + gamemode,
     state: state,
     assets: {
@@ -99,8 +92,15 @@ export function setIngamePresence(matchInfo: MatchInfo, me: Me, gameInfo: GameIn
       small_text: ValorantAgents[me.agent as keyof typeof ValorantAgents]
     }
   }
+  return presence
+}
 
-  setPresence(presence)
+export function setIngamePresence(matchInfo: MatchInfo, me: Me, gameInfo: GameInfo, kill:Kill) {
+  if (!isReady()) return initialize().then(() => {
+    setIngamePresence(matchInfo,me,gameInfo,kill)
+  });
+
+  setPresence(getPresence(matchInfo,me,gameInfo,kill))
 }
 
 
