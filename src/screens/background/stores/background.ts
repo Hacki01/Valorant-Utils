@@ -1,7 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {ValorantInfoUpdate} from "../../../types/valorant";
-import { dispose, initialize } from "features/discordRichPresence";
-import { setIngamePresence } from "../components/ValorantPresence";
 interface Timestamp {
   timestamp: number;
 }
@@ -98,19 +96,9 @@ const backgroundSlice = createSlice({
   reducers: {
     setDisplayForDRP(state, action: PayloadAction<boolean>) {
       if (action.payload) {
-        // Don't set state until initialization completes successfully
-        initialize()
-          .then(() => {
-            state.displayDRP = true;
-            setIngamePresence(state.matchInfo, state.me, state.gameInfo, state.kill);
-          })
-          .catch(error => {
-            console.error('[DRP] Failed to initialize:', error);
-            state.displayDRP = false;
-          });
+        state.displayDRP = true;
       } else {
         state.displayDRP = false;
-        dispose();
       }
     },
     setEvent(state, action: EventPayload) {

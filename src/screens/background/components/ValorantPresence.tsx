@@ -110,9 +110,8 @@ export default function ValorantPresence() {
   );
 
   const startPresence = useCallback(async () => {
-    if (!displayDRP) return
     const valorant = await getValorantGame();
-    if (valorant) {
+    if (valorant && displayDRP) {
       setIngamePresence(matchInfo,me,gameInfo,kill)
     } else {
       dispose();
@@ -136,11 +135,7 @@ export default function ValorantPresence() {
       overwolf.games.onGameInfoUpdated.removeListener(() => {});
       overwolf.extensions.onAppLaunchTriggered.removeListener(() => {});
     };
-  }, [startPresence]);
-
-  useEffect(() => {
-    startPresence()
-  },[startPresence])
+  }, [startPresence,displayDRP]);
 
   return null;
 }
