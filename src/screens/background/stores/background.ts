@@ -96,6 +96,7 @@ const backgroundSlice = createSlice({
   reducers: {
     setDisplayForDRP(state, action: PayloadAction<boolean>) {
       state.displayDRP = action.payload;
+      localStorage.setItem("displayDRP", action.payload.toString());
     },
     setEvent(state, action: EventPayload) {
       let payload = action.payload

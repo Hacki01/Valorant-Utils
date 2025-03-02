@@ -12,10 +12,14 @@ import { Presence } from "features/discordRichPresence";
 
 const PresencePreview = ({ presence } : { presence: Presence}) => {
   return <div className={"presencePreview"}>
-    <div className={"presenceMap"}>Map: {presence.assets.large_text}</div>
-    <div className={"presenceAgent"}>Agent: {presence.assets.small_text || "No agent"}</div>
-    <div className={"presenceDetails"}>{presence.details}</div>
-    <div className={"presenceState"}>{presence.state}</div>
+    <div>
+      <div className={"presenceMap"}>Map: {presence.assets.large_text}</div>
+      <div className={"presenceDetails"}>{presence.details}</div>
+    </div>
+    <div>
+      <div className={"presenceAgent"}>Agent: {presence.assets.small_text || "No agent"}</div>
+      <div className={"presenceState"}>{presence.state}</div>
+    </div>
   </div>
 }
 
@@ -26,8 +30,6 @@ const Screen = () => {
   )
 
   const presence = getPresence(matchInfo, me, gameInfo, kill);
-
-  console.log(kill)
 
   const dispatch = useDispatch();
 

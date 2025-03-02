@@ -1,10 +1,10 @@
 import { RootReducer } from "app/shared/rootReducer";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getValorantGame, VALORANT_CLASS_ID } from "lib/games";
 import { useCallback, useEffect } from "react";
 
 import { initialize, isReady, setPresence,  dispose, Presence } from "features/discordRichPresence";
-import { GameInfo, Kill, MatchInfo, Me } from "screens/background/stores/background";
+import { GameInfo, Kill, MatchInfo, Me, setDisplayForDRP } from "screens/background/stores/background";
 import { ValorantAgents, ValorantMaps, ValorantModes } from "types/valorant";
 
 let gameStartTime : number | null = null
@@ -108,6 +108,14 @@ export default function ValorantPresence() {
   const { matchInfo, me ,gameInfo, kill, displayDRP } = useSelector(
     (state: RootReducer) => state.background,
   );
+
+  const dispatch = useDispatch();
+
+  const lsDisplayDRP = localStorage.getItem("displayDRP");
+
+  if (lsDisplayDRP !== null && lsDisplayDRP !== displayDRP.toString()) {
+    dispatch(setDisplayForDRP(lsDisplayDRP === "true"))
+  }
 
   const startPresence = useCallback(async () => {
     const valorant = await getValorantGame();
