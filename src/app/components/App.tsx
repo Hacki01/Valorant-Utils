@@ -14,6 +14,7 @@ export const App = () => {
   useEffect(() => {
     (async function preLoad() {
       let pathname = (window.location.pathname).slice(1)
+      document.title = `Valorant Utils - ${pathname}`
       const currentWindow = await getCurrentWindow(pathname || null);
       setScreenName(currentWindow);
       log(
