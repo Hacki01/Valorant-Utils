@@ -23,3 +23,4 @@ console.info(
   "%cManifest updated successfully!",
   "color: green; font-weight: bold;"
 );
+
