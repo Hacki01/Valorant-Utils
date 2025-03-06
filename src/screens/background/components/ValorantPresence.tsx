@@ -86,10 +86,11 @@ export function getPresence(matchInfo: MatchInfo, me: Me, gameInfo: GameInfo, ki
   }
 
   if (me.agent) {
+    let agent = ValorantAgents[me.agent as keyof typeof ValorantAgents] || "Unknown"
     presence.assets= {
       ...presence.assets,
-      small_image: ValorantAgents[me.agent as keyof typeof ValorantAgents].toLowerCase(),
-      small_text: ValorantAgents[me.agent as keyof typeof ValorantAgents]
+      small_image: agent.toLowerCase(),
+      small_text: agent
     }
   }
   return presence

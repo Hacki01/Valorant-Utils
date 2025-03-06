@@ -12,10 +12,9 @@ import store from "app/shared/store";
 import { log } from "lib/log";
 import ValorantPresence from "./ValorantPresence";
 
-const { DESKTOP, INGAME } = WINDOW_NAMES;
+const { INGAME } = WINDOW_NAMES;
 
 const BackgroundWindow = () => {
-  const [desktop] = useWindow(DESKTOP, DISPLAY_OVERWOLF_HOOKS_LOGS);
   const [ingame] = useWindow(INGAME, DISPLAY_OVERWOLF_HOOKS_LOGS);
 
   const { start, stop } = useGameEventProvider(
@@ -44,24 +43,39 @@ const BackgroundWindow = () => {
     DISPLAY_OVERWOLF_HOOKS_LOGS
   );
 
+  const getWindowState = useCallback(() => {
+    return new Promise((resolve) => {
+      overwolf.windows.getWindowState(ingame.id, (result) => {
+        resolve(result.window_state);
+      });
+    });
+  }, [ingame]);
+
   const startApp = useCallback(
     async (reason: string) => {
-      //if the desktop or ingame window is not ready we don't want to start the app
-      if (!desktop || !ingame) return;
       log(reason, "src/screens/background/components/Screen.tsx", "startApp");
       const valorant = await getValorantGame();
       if (valorant) {
-        await Promise.all([start(), ingame?.restore(), desktop?.minimize()]);
-
+        await Promise.all([start(), ingame?.minimize()]);
       } else {
-        await Promise.all([stop(), desktop?.close(), ingame?.close()]);
+        await Promise.all([stop(), ingame?.close()]);
       }
     },
-    [desktop, ingame, start, stop]
+    [ingame, start, stop]
   );
 
   useEffect(() => {
     startApp("on initial load");
+    overwolf.settings.hotkeys.onPressed.addListener(async (result) => {
+      if (result.name === "show_ingame") {
+        const currentState = await getWindowState();
+        if (currentState === 'minimized') {
+          ingame.restore();
+        } else {
+          ingame.minimize();
+        }
+      }
+    });
     overwolf.games.onGameInfoUpdated.addListener(async (event) => {
       if (
         event.runningChanged &&
@@ -74,10 +88,11 @@ const BackgroundWindow = () => {
       startApp("onAppLaunchTriggered");
     });
     return () => {
+      overwolf.settings.hotkeys.onPressed.removeListener(() => {});
       overwolf.games.onGameInfoUpdated.removeListener(() => {});
       overwolf.extensions.onAppLaunchTriggered.removeListener(() => {});
     };
-  }, [startApp]);
+  }, [startApp,ingame,getWindowState]);
   return <ValorantPresence />;
 };
 

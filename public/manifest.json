@@ -10,7 +10,7 @@
     "icon_gray": "IconMouseNormal.png",
     "launcher_icon": "desktop-icon.ico",
     "window_icon": "TaskbarIcon.png",
-    "description": "Testing Overwolf Application Developement"
+    "description": "Display your Valorant info as Discord Rich Presence!"
   },
   "permissions": [
     "Extensions",
@@ -29,8 +29,8 @@
       "show_ingame": {
         "title": "Show Ingame Menu",
         "action-type": "custom",
-        "default": "Alt+X",
-        "passthrough": true
+        "default": "Alt+B",
+        "passthrough": false
       },
       "show_cat": {
         "title": "Show a cat gif",
@@ -80,6 +80,20 @@
         "popup_blocker": true,
         "mute": true
       },
+      "notification": {
+        "file": "Files/index.html",
+        "in_game_only": true,
+        "block_top_window_navigation": true,
+        "transparent": true,
+        "size": {
+          "width": 400,
+          "height": 100
+        },
+        "start_position": {
+          "top": 50,
+          "right": 50
+        }
+      },
       "in_game": {
         "file": "Files/index.html",
         "in_game_only": true,
@@ -90,20 +104,12 @@
         "block_top_window_navigation": true,
         "transparent": true,
         "size": {
-          "width": 1920,
-          "height": 1080
-        },
-        "min_size": {
-          "width": 0,
-          "height": 0
-        },
-        "max_size": {
-          "width": 1920,
-          "height": 1080
+          "width": 1024,
+          "height": 576
         },
         "start_position": {
-          "top": 0,
-          "left": 0
+          "top": 50,
+          "left": 50
         }
       }
     },

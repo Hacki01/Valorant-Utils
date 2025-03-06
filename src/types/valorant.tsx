@@ -54,6 +54,7 @@ export enum ValorantAgents {
   Smonk_PC_C = "Clove",
   Nox_PC_C = "Vyse",
   Cashew_PC_C = "Tejo",
+  Terra_PC_C = "Waylay",
 }
 
 export interface ValorantInfoUpdate extends overwolf.games.events.InfoUpdate2 {
