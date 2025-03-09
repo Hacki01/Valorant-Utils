@@ -1,0 +1,22 @@
+.notificationScreen{
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  gap: 5px;
+  font-family: var(--font-family);
+  font-size: var(--font-size);
+  font-weight: var(--font-weight);
+  color: var(--primary-color-text);
+  overflow: hidden;
+}
+
+.notification{
+  width: auto;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  background-color: #35353596;
+  border-radius: 15px;
+  padding: 5px;
+}

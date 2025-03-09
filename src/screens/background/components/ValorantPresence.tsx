@@ -6,8 +6,9 @@ import { useCallback, useEffect } from "react";
 import { initialize, isReady, setPresence,  dispose, Presence } from "features/discordRichPresence";
 import { GameInfo, Kill, MatchInfo, Me, setDisplayForDRP } from "screens/background/stores/background";
 import { ValorantAgents, ValorantMaps, ValorantModes } from "types/valorant";
+import { ingameNotification } from "features/notification";
 
-let gameStartTime : number | null = null
+var gameStartTime : number | null = null
 
 function getMainMenuPresence() {
   let presence : Presence = {
@@ -24,7 +25,7 @@ function getMainMenuPresence() {
 export function getPresence(matchInfo: MatchInfo, me: Me, gameInfo: GameInfo, kill:Kill) {
   let presence : Presence = getMainMenuPresence()
   if (!matchInfo.map || !matchInfo.game_mode) return presence
-  let map = ValorantMaps[matchInfo.map as keyof typeof ValorantMaps] as string
+  let map = ValorantMaps[matchInfo.map as keyof typeof ValorantMaps] as string || "Unknown"
   let gamemode = matchInfo.game_mode.mode
   let gameScene = gameInfo.scene
   let custom = matchInfo.game_mode.custom === true ? "Custom game - " : ""
@@ -100,7 +101,8 @@ export function setIngamePresence(matchInfo: MatchInfo, me: Me, gameInfo: GameIn
   if (!isReady()) return initialize().then(() => {
     setIngamePresence(matchInfo,me,gameInfo,kill)
   });
-
+  ingameNotification("✅ DRP connected!", 20)
+  console.log('SETTING PRESENCE')
   setPresence(getPresence(matchInfo,me,gameInfo,kill))
 }
 
@@ -122,6 +124,7 @@ export default function ValorantPresence() {
     const valorant = await getValorantGame();
     if (valorant && displayDRP) {
       setIngamePresence(matchInfo,me,gameInfo,kill)
+
     } else {
       dispose();
     }

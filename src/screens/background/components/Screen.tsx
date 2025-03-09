@@ -12,10 +12,11 @@ import store from "app/shared/store";
 import { log } from "lib/log";
 import ValorantPresence from "./ValorantPresence";
 
-const { INGAME } = WINDOW_NAMES;
+const { INGAME, NOTIFICATION } = WINDOW_NAMES;
 
 const BackgroundWindow = () => {
   const [ingame] = useWindow(INGAME, DISPLAY_OVERWOLF_HOOKS_LOGS);
+  const [notification] = useWindow(NOTIFICATION, DISPLAY_OVERWOLF_HOOKS_LOGS);
 
   const { start, stop } = useGameEventProvider(
     {
@@ -45,7 +46,7 @@ const BackgroundWindow = () => {
 
   const getWindowState = useCallback(() => {
     return new Promise((resolve) => {
-      overwolf.windows.getWindowState(ingame.id, (result) => {
+      overwolf.windows.getWindowState(ingame?.id, (result) => {
         resolve(result.window_state);
       });
     });
@@ -56,12 +57,12 @@ const BackgroundWindow = () => {
       log(reason, "src/screens/background/components/Screen.tsx", "startApp");
       const valorant = await getValorantGame();
       if (valorant) {
-        await Promise.all([start(), ingame?.minimize()]);
+        await Promise.all([start(), ingame?.minimize(), notification?.restore()]);
       } else {
-        await Promise.all([stop(), ingame?.close()]);
+        await Promise.all([stop(), ingame?.close(), notification?.close()]);
       }
     },
-    [ingame, start, stop]
+    [ingame,notification, start, stop]
   );
 
   useEffect(() => {
