@@ -4,7 +4,7 @@ import { getValorantGame, VALORANT_CLASS_ID } from "lib/games";
 import { useCallback, useEffect } from "react";
 
 import { initialize, isReady, setPresence,  dispose, Presence } from "features/discordRichPresence";
-import { GameInfo, Kill, MatchInfo, Me, setDisplayForDRP } from "screens/background/stores/background";
+import { GameInfo, Kill, MatchInfo, Me, setDisplayAgent, setDisplayForDRP } from "screens/background/stores/background";
 import { ValorantAgents, ValorantMaps, ValorantModes } from "types/valorant";
 import { ingameNotification } from "features/notification";
 
@@ -97,38 +97,42 @@ export function getPresence(matchInfo: MatchInfo, me: Me, gameInfo: GameInfo, ki
   return presence
 }
 
-export function setIngamePresence(matchInfo: MatchInfo, me: Me, gameInfo: GameInfo, kill:Kill) {
+function setIngamePresence(matchInfo: MatchInfo, me: Me, gameInfo: GameInfo, kill:Kill) {
   if (!isReady()) return initialize().then(() => {
     setIngamePresence(matchInfo,me,gameInfo,kill)
+    /* Show notification when connected to discord successfully */
+    ingameNotification("✅ Connected to DRP!", 4)
   });
-  ingameNotification("✅ DRP connected!", 20)
-  console.log('SETTING PRESENCE')
   setPresence(getPresence(matchInfo,me,gameInfo,kill))
 }
 
 
 export default function ValorantPresence() {
-  const { matchInfo, me ,gameInfo, kill, displayDRP } = useSelector(
+  const { matchInfo, me ,gameInfo, kill, displayDRP, displayAgent } = useSelector(
     (state: RootReducer) => state.background,
   );
 
   const dispatch = useDispatch();
 
   const lsDisplayDRP = localStorage.getItem("displayDRP");
+  const lsDisplayAgent = localStorage.getItem("displayAgent");
 
   if (lsDisplayDRP !== null && lsDisplayDRP !== displayDRP.toString()) {
     dispatch(setDisplayForDRP(lsDisplayDRP === "true"))
+  }
+  if (lsDisplayAgent !== null && lsDisplayAgent !== displayAgent.toString()) {
+    dispatch(setDisplayAgent(lsDisplayAgent === "true"))
   }
 
   const startPresence = useCallback(async () => {
     const valorant = await getValorantGame();
     if (valorant && displayDRP) {
+      if (!displayAgent) me.agent = null
       setIngamePresence(matchInfo,me,gameInfo,kill)
-
     } else {
       dispose();
     }
-  },[matchInfo,me,gameInfo,kill,displayDRP])
+  },[matchInfo,me,gameInfo,kill,displayDRP, displayAgent])
 
   useEffect(() => {
     startPresence()

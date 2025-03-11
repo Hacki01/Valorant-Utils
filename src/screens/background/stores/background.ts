@@ -51,6 +51,7 @@ interface BackgroundState {
   events: Array<Timestamp & OwEvent>
   infos: Array<Timestamp & OwInfo>
   displayDRP: boolean
+  displayAgent: boolean
   matchInfo: MatchInfo
   gameInfo: GameInfo
   me: Me
@@ -62,6 +63,7 @@ const initialState: BackgroundState = {
   events: [],
   infos: [],
   displayDRP: true,
+  displayAgent: true,
   gameInfo:{
     scene: null
   },
@@ -97,6 +99,10 @@ const backgroundSlice = createSlice({
     setDisplayForDRP(state, action: PayloadAction<boolean>) {
       state.displayDRP = action.payload;
       localStorage.setItem("displayDRP", action.payload.toString());
+    },
+    setDisplayAgent(state, action: PayloadAction<boolean>) {
+      state.displayDRP = action.payload;
+      localStorage.setItem("displayAgent", action.payload.toString());
     },
     setEvent(state, action: EventPayload) {
       let payload = action.payload
@@ -146,6 +152,6 @@ const backgroundSlice = createSlice({
   },
 });
 
-export const { setEvent, setInfo, setDisplayForDRP } = backgroundSlice.actions;
+export const { setEvent, setInfo, setDisplayForDRP, setDisplayAgent } = backgroundSlice.actions;
 
 export default backgroundSlice.reducer;
