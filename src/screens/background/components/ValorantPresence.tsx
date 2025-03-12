@@ -1,7 +1,7 @@
 import { RootReducer } from "app/shared/rootReducer";
 import { useDispatch, useSelector } from "react-redux";
 import { getValorantGame, VALORANT_CLASS_ID } from "lib/games";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { initialize, isReady, setPresence,  dispose, Presence } from "features/discordRichPresence";
 import { GameInfo, Kill, MatchInfo, Me, setDisplayAgent, setDisplayForDRP } from "screens/background/stores/background";
@@ -22,7 +22,7 @@ function getMainMenuPresence() {
   return presence
 }
 
-export function getPresence(matchInfo: MatchInfo, me: Me, gameInfo: GameInfo, kill:Kill) {
+function getPresence(matchInfo: MatchInfo, me: Me, gameInfo: GameInfo, kill:Kill) {
   let presence : Presence = getMainMenuPresence()
   if (!matchInfo.map || !matchInfo.game_mode) return presence
   let map = ValorantMaps[matchInfo.map as keyof typeof ValorantMaps] as string || "Unknown"
@@ -154,4 +154,27 @@ export default function ValorantPresence() {
   }, [startPresence,displayDRP]);
 
   return null;
+}
+
+
+export function PresencePreview() {
+  const { displayDRP, displayAgent, matchInfo,me,gameInfo,kill } = useSelector(
+    (state: RootReducer) => state.background,
+  )
+
+
+  let presence = getPresence(matchInfo,me,gameInfo,kill)
+  
+  if (!displayDRP) return <div className={"presencePreview"}>Discord Rich Presence is disabled</div>
+
+  return <div className={"presencePreview"}>
+    <div>
+      <div className={"presenceMap"}>{presence.assets.large_text}</div>
+      <div className={"presenceDetails"}>{presence.details}</div>
+    </div>
+    <div>
+      <div className={"presenceAgent"}>{displayAgent ? (presence.assets.small_text || "No agent") : "Agent display disabled"}</div>
+      <div className={"presenceState"}>{presence.state}</div>
+    </div>
+  </div>
 }
