@@ -3,14 +3,14 @@ import { MenuHeader } from "./MenuHeader";
 import "./styles/ingameMenu.css";
 import { RootReducer } from "app/shared/rootReducer";
 
-import { setDisplayForDRP } from "../../background/stores/background";
+import { setDisplayAgent, setDisplayForDRP } from "../../background/stores/background";
 import { PresencePreview } from "screens/background/components/ValorantPresence";
 
 //avoid the use of static text, use i18n instead, each language has its own text, and the text is stored in the
 //locales folder in the project root
 
 export default function Menu () {
-  const { displayDRP } = useSelector(
+  const { displayDRP, displayAgent } = useSelector(
     (state: RootReducer) => state.background,
   )
 
@@ -35,12 +35,12 @@ export default function Menu () {
         <div className={"buttonToggleDRP"}>
           <button 
             className="switch-button" 
-            data-active={displayDRP}
-            onClick={() => dispatch(setDisplayForDRP(!displayDRP))}
-            aria-label="Toggle Discord Rich Presence"
+            data-active={displayAgent}
+            onClick={() => dispatch(setDisplayAgent(!displayAgent))}
+            aria-label="Toggle Discord Agent preview"
           />
           {
-            displayDRP ? <div>Disable Discord Rich Presence</div> : <div>Enable Discord Rich Presence</div>
+            displayAgent ? <div>Disable Agent display</div> : <div>Enable Agent display</div>
           }
         </div>
       </div>
