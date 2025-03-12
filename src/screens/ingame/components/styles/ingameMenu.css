@@ -22,11 +22,13 @@ body {
   display: flex;
   align-items:flex-start;
   flex-direction: column;
+  user-select: none;
 }
 
 .presencePreview{
   padding: 10px;
-  width: 300px;
+  font-size: large;
+  width: 500px;
   height: 50px;
   display: flex;
   background-color: #0000007a;

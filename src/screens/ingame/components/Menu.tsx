@@ -20,6 +20,7 @@ export default function Menu () {
     <div className='ingameMenu'>
       <MenuHeader />
       <div className={"ingameMenuContainer"}>
+        <PresencePreview />
         <div className={"buttonToggleDRP"}>
           <button 
             className="switch-button" 
@@ -31,7 +32,6 @@ export default function Menu () {
             displayDRP ? <div>Disable Discord Rich Presence</div> : <div>Enable Discord Rich Presence</div>
           }
         </div>
-        <PresencePreview />
         <div className={"buttonToggleDRP"}>
           <button 
             className="switch-button" 

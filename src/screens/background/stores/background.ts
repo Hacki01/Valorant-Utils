@@ -101,7 +101,7 @@ const backgroundSlice = createSlice({
       localStorage.setItem("displayDRP", action.payload.toString());
     },
     setDisplayAgent(state, action: PayloadAction<boolean>) {
-      state.displayDRP = action.payload;
+      state.displayAgent = action.payload;
       localStorage.setItem("displayAgent", action.payload.toString());
     },
     setEvent(state, action: EventPayload) {
