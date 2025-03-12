@@ -9,6 +9,7 @@ import { ValorantAgents, ValorantMaps, ValorantModes } from "types/valorant";
 import { ingameNotification } from "features/notification";
 
 var gameStartTime : number | null = null
+  
 
 function getMainMenuPresence() {
   let presence : Presence = {
@@ -22,7 +23,7 @@ function getMainMenuPresence() {
   return presence
 }
 
-function getPresence(matchInfo: MatchInfo, me: Me, gameInfo: GameInfo, kill:Kill) {
+const getPresence = (matchInfo: MatchInfo, me: Me, gameInfo: GameInfo, kill:Kill) => {
   let presence : Presence = getMainMenuPresence()
   if (!matchInfo.map || !matchInfo.game_mode) return presence
   let map = ValorantMaps[matchInfo.map as keyof typeof ValorantMaps] as string || "Unknown"
@@ -97,15 +98,6 @@ function getPresence(matchInfo: MatchInfo, me: Me, gameInfo: GameInfo, kill:Kill
   return presence
 }
 
-function setIngamePresence(matchInfo: MatchInfo, me: Me, gameInfo: GameInfo, kill:Kill) {
-  if (!isReady()) return initialize().then(() => {
-    setIngamePresence(matchInfo,me,gameInfo,kill)
-    /* Show notification when connected to discord successfully */
-    ingameNotification("✅ Connected to DRP!", 4)
-  });
-  setPresence(getPresence(matchInfo,me,gameInfo,kill))
-}
-
 
 export default function ValorantPresence() {
   const { matchInfo, me ,gameInfo, kill, displayDRP, displayAgent } = useSelector(
@@ -124,15 +116,26 @@ export default function ValorantPresence() {
     dispatch(setDisplayAgent(lsDisplayAgent === "true"))
   }
 
+  const setIngamePresence = useCallback(async (matchInfo: MatchInfo, me: Me, gameInfo: GameInfo, kill:Kill) => {
+    if (!isReady()) return initialize().then(() => {
+      setIngamePresence(matchInfo,me,gameInfo,kill)
+      /* Show notification when connected to discord successfully */
+      ingameNotification("✅ Connected to DRP!", 4)
+    });
+    setPresence(getPresence(matchInfo,me,gameInfo,kill))
+  },[])
+
   const startPresence = useCallback(async () => {
     const valorant = await getValorantGame();
     if (valorant && displayDRP) {
-      if (!displayAgent) me.agent = null
+      if (!displayAgent) {
+        me.agent = null
+      }
       setIngamePresence(matchInfo,me,gameInfo,kill)
     } else {
       dispose();
     }
-  },[matchInfo,me,gameInfo,kill,displayDRP, displayAgent])
+  },[displayAgent,displayDRP,gameInfo,kill,matchInfo,me,setIngamePresence])
 
   useEffect(() => {
     startPresence()

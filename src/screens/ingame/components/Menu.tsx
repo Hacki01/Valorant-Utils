@@ -28,9 +28,7 @@ export default function Menu () {
             onClick={() => dispatch(setDisplayForDRP(!displayDRP))}
             aria-label="Toggle Discord Rich Presence"
           />
-          {
-            displayDRP ? <div>Disable Discord Rich Presence</div> : <div>Enable Discord Rich Presence</div>
-          }
+          Show Valorant as Discord Status
         </div>
         <div className={"buttonToggleDRP"}>
           <button 
@@ -39,9 +37,7 @@ export default function Menu () {
             onClick={() => dispatch(setDisplayAgent(!displayAgent))}
             aria-label="Toggle Discord Agent preview"
           />
-          {
-            displayAgent ? <div>Disable Agent display</div> : <div>Enable Agent display</div>
-          }
+          Show your Agent in Discord status
         </div>
       </div>
     </div>
