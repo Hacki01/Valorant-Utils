@@ -1,7 +1,7 @@
 import { RootReducer } from "app/shared/rootReducer";
 import { useDispatch, useSelector } from "react-redux";
 import { getValorantGame, VALORANT_CLASS_ID } from "lib/games";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 
 import { initialize, isReady, setPresence,  dispose, Presence } from "features/discordRichPresence";
 import { GameInfo, Kill, MatchInfo, Me, setDisplayAgent, setDisplayForDRP } from "screens/background/stores/background";
