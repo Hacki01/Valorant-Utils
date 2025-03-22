@@ -4,7 +4,7 @@ import { getValorantGame, VALORANT_CLASS_ID } from "lib/games";
 import { useCallback, useEffect } from "react";
 
 import { initialize, isReady, setPresence,  dispose, Presence } from "features/discordRichPresence";
-import { GameInfo, Kill, MatchInfo, Me, setDisplayAgent, setDisplayForDRP } from "screens/background/stores/background";
+import { GameInfo, Kill, MatchInfo, Me, changeDiscordConfigValue } from "screens/background/stores/background";
 import { ValorantAgents, ValorantMaps, ValorantModes } from "types/valorant";
 import { ingameNotification } from "features/notification";
 
@@ -100,9 +100,12 @@ const getPresence = (matchInfo: MatchInfo, me: Me, gameInfo: GameInfo, kill:Kill
 
 
 export default function ValorantPresence() {
-  const { matchInfo, me ,gameInfo, kill, displayDRP, displayAgent } = useSelector(
+  const { matchInfo, me ,gameInfo, kill, discordConfig } = useSelector(
     (state: RootReducer) => state.background,
   );
+  const { displayDRP, displayAgent } = useSelector(
+    (state: RootReducer) => state.background.discordConfig,
+  )
 
   const dispatch = useDispatch();
 
@@ -110,10 +113,10 @@ export default function ValorantPresence() {
   const lsDisplayAgent = localStorage.getItem("displayAgent");
 
   if (lsDisplayDRP !== null && lsDisplayDRP !== displayDRP.toString()) {
-    dispatch(setDisplayForDRP(lsDisplayDRP === "true"))
+    dispatch(changeDiscordConfigValue({key:"displayDRP",value:lsDisplayDRP === "true"}))
   }
   if (lsDisplayAgent !== null && lsDisplayAgent !== displayAgent.toString()) {
-    dispatch(setDisplayAgent(lsDisplayAgent === "true"))
+    dispatch(changeDiscordConfigValue({key:"displayAgent",value:lsDisplayAgent === "true"}))
   }
 
   const setIngamePresence = useCallback(async (matchInfo: MatchInfo, me: Me, gameInfo: GameInfo, kill:Kill) => {
@@ -161,14 +164,18 @@ export default function ValorantPresence() {
 
 
 export function PresencePreview() {
-  const { displayDRP, displayAgent, matchInfo,me,gameInfo,kill } = useSelector(
+  const { matchInfo,me,gameInfo,kill } = useSelector(
     (state: RootReducer) => state.background,
+  )
+
+  const { displayDRP, displayAgent } = useSelector(
+    (state: RootReducer) => state.background.discordConfig,
   )
 
 
   let presence = getPresence(matchInfo,me,gameInfo,kill)
   
-  if (!displayDRP) return <div className={"presencePreview"}>Discord Rich Presence is disabled</div>
+  if (!displayDRP) return <div className={"presencePreview"}>Discord Presence is disabled</div>
 
   return <div className={"presencePreview"}>
     <div>

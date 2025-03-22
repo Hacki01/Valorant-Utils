@@ -50,8 +50,10 @@ export interface Kill {
 interface BackgroundState {
   events: Array<Timestamp & OwEvent>
   infos: Array<Timestamp & OwInfo>
-  displayDRP: boolean
-  displayAgent: boolean
+  discordConfig: {
+    displayDRP: boolean
+    displayAgent: boolean
+  }
   matchInfo: MatchInfo
   gameInfo: GameInfo
   me: Me
@@ -62,8 +64,10 @@ interface BackgroundState {
 const initialState: BackgroundState = {
   events: [],
   infos: [],
-  displayDRP: true,
-  displayAgent: true,
+  discordConfig: {
+    displayDRP: true,
+    displayAgent: true
+  },
   gameInfo:{
     scene: null
   },
@@ -96,13 +100,9 @@ const backgroundSlice = createSlice({
   name: "backgroundScreen",
   initialState,
   reducers: {
-    setDisplayForDRP(state, action: PayloadAction<boolean>) {
-      state.displayDRP = action.payload;
-      localStorage.setItem("displayDRP", action.payload.toString());
-    },
-    setDisplayAgent(state, action: PayloadAction<boolean>) {
-      state.displayAgent = action.payload;
-      localStorage.setItem("displayAgent", action.payload.toString());
+    changeDiscordConfigValue(state, action: PayloadAction<{key: keyof BackgroundState['discordConfig'], value: boolean}>) {
+      state.discordConfig[action.payload.key] = action.payload.value;
+      localStorage.setItem(action.payload.key, action.payload.value.toString());
     },
     setEvent(state, action: EventPayload) {
       let payload = action.payload
@@ -152,6 +152,6 @@ const backgroundSlice = createSlice({
   },
 });
 
-export const { setEvent, setInfo, setDisplayForDRP, setDisplayAgent } = backgroundSlice.actions;
+export const { setEvent, setInfo, changeDiscordConfigValue } = backgroundSlice.actions;
 
 export default backgroundSlice.reducer;

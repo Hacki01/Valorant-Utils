@@ -3,7 +3,7 @@ import { MenuHeader } from "./MenuHeader";
 import "./styles/ingameMenu.css";
 import { RootReducer } from "app/shared/rootReducer";
 
-import { setDisplayAgent, setDisplayForDRP } from "../../background/stores/background";
+import { changeDiscordConfigValue } from "../../background/stores/background";
 import { PresencePreview } from "screens/background/components/ValorantPresence";
 
 //avoid the use of static text, use i18n instead, each language has its own text, and the text is stored in the
@@ -11,7 +11,7 @@ import { PresencePreview } from "screens/background/components/ValorantPresence"
 
 export default function Menu () {
   const { displayDRP, displayAgent } = useSelector(
-    (state: RootReducer) => state.background,
+    (state: RootReducer) => state.background.discordConfig,
   )
 
   const dispatch = useDispatch();
@@ -25,19 +25,23 @@ export default function Menu () {
           <button 
             className="switch-button" 
             data-active={displayDRP}
-            onClick={() => dispatch(setDisplayForDRP(!displayDRP))}
+            onClick={() => dispatch(changeDiscordConfigValue({key:"displayDRP",value:!displayDRP}))}
             aria-label="Toggle Discord Rich Presence"
           />
-          Show Valorant as Discord Status
+          Enable Discord Presence
         </div>
         <div className={"buttonToggleDRP"}>
-          <button 
-            className="switch-button" 
-            data-active={displayAgent}
-            onClick={() => dispatch(setDisplayAgent(!displayAgent))}
-            aria-label="Toggle Discord Agent preview"
-          />
-          Show your Agent in Discord status
+          <label className="checkbox-container">
+            <input
+              type="checkbox"
+              checked={displayAgent}
+              disabled={!displayDRP}
+              onChange={() => dispatch(changeDiscordConfigValue({key:"displayAgent",value:!displayAgent}))}
+              aria-label="Toggle Discord Agent preview"
+            />
+            <span className="checkmark"></span>
+            Show your Agent in Discord status
+          </label>
         </div>
       </div>
     </div>

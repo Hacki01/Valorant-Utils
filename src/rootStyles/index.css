@@ -4,17 +4,20 @@
   --neutral-3: #525252;
   --neutral-4: #a1a1aa;
 
-  --primary-color: #bd19d2;
-  --primary-color-light: #c663ff;
-  --primary-color-dark: #8500a0;
+  --primary-color: #ff4655;
+  --primary-color-light: #FF7A78;
+  --primary-color-dark: #DB3753;
   --primary-color-text: #ffffff;
   --secondary-color: #c2185b;
   --secondary-color-light: #fa5788;
   --secondary-color-dark: #8c0032;
   --secondary-color-text: #ffffff;
+  --success-color: #00c853;
+  --warning-color: #ffab00;
+  --info-color: #2196f3;
   --disabled-color: #666666;
   --error-color: #b00020;
-  --background-color: #171717;
+  --blackbg-color: #171717;
   --font-family: "Roboto", sans-serif;
   --font-size: 16px;
   --font-weight: 400;

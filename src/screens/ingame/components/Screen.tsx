@@ -33,9 +33,8 @@ const Screen = () => {
     <div className="ingame">
       {isCatVisible ? 
         <img style={{zIndex:100}} className="catImage" width={1024} height={576} alt='cat gif' src='https://media.tenor.com/RUCmdkzaIsoAAAAM/cat-wet.gif' />
-        : null
+        : <Menu/>
       }
-      <Menu/>
     </div>
   );
 };

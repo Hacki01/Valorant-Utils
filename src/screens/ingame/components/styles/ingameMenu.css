@@ -47,11 +47,11 @@ body {
 }
 
 .switch-button {
-  position: relative;
   width: 60px;
   height: 30px;
   margin: 10px;
-  background: #2b2b2b;
+  position: relative;
+  background: var(--blackbg-color);
   border-radius: 15px;
   border: none;
   cursor: pointer;
@@ -71,7 +71,7 @@ body {
 }
 
 .switch-button[data-active="true"] {
-  background: #4CAF50;
+  background: var(--primary-color);
 }
 
 .switch-button[data-active="true"]::after {
@@ -85,4 +85,111 @@ body {
 /* Remove the old input styles */
 input[type='button'] {
   display: none;
+}
+
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  position: relative;
+  padding-left: 35px;
+  cursor: pointer;
+  user-select: none;
+  margin: 10px; /* Added to match switch-button margin */
+}
+
+.checkbox-container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.checkmark {
+  position: absolute;
+  left: 0;
+  height: 25px;
+  width: 25px;
+  background-color: #eee;
+  border-radius: 4px;
+}
+
+.checkbox-container:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+.checkbox-container input:checked ~ .checkmark {
+  background-color: var(--primary-color);
+}
+
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+.checkbox-container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+.checkbox-container .checkmark:after {
+  left: 9px;
+  top: 5px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  transform: rotate(45deg);
+}
+
+.checkbox-container input:disabled ~ .checkmark {
+  background-color: #0a0a0a;
+  cursor: not-allowed;
+  border: 2px solid #333;
+  opacity: 1;
+}
+
+.checkbox-container input:disabled ~ .checkmark:before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    45deg,
+    #0a0a0a,
+    #0a0a0a 4px,
+    #222 4px,
+    #222 8px
+  );
+}
+
+/* Add an "X" for disabled state */
+.checkbox-container input:disabled ~ .checkmark:after {
+  display: block;
+  position: absolute;
+  color: #444;
+  font-size: 24px;
+  font-weight: bold;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: none;
+}
+
+.checkbox-container input:disabled ~ span.checkmark:hover {
+  cursor: not-allowed;
+}
+
+.checkbox-container input:disabled ~ span.text {
+  color: #444;
+  opacity: 0.5;
+}
+
+.checkbox-container:hover input:disabled ~ .checkmark {
+  background-color: #121212;
+}
+
+.checkbox-container input:disabled ~ span {
+  color: #555;
+  opacity: 0.7;
 }
