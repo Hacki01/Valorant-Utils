@@ -15,9 +15,9 @@
     "web-vitals": "^3.5.2"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build && npm run post-build",
-    "test": "react-scripts test",
+    "start": "craco start",
+    "build": "craco build && npm run post-build",
+    "test": "craco test",
     "eject": "react-scripts eject",
     "start-remote-server": "redux-devtools --hostname=localhost --port=8081 --open",
     "format": "prettier --write src/**/*.ts{,x}",
@@ -46,6 +46,7 @@
     ]
   },
   "devDependencies": {
+    "@craco/craco": "^7.1.0",
     "@overwolf/types": "^3.24.7",
     "@redux-devtools/cli": "^4.0.0",
     "@redux-devtools/remote": "^0.9.3",

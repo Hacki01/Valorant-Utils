@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { RootReducer } from "app/shared/rootReducer";
 import { setCatVisibility } from "../stores/ingame";
-import Menu from "./Menu";
+import Panel from "@components/Panel";
 import { isDev } from "lib/utils";
 /* import { useState } from "react"; */
 
@@ -33,7 +33,7 @@ const Screen = () => {
     <div className="ingame">
       {isCatVisible ? 
         <img style={{zIndex:100}} className="catImage" width={1024} height={576} alt='cat gif' src='https://media.tenor.com/RUCmdkzaIsoAAAAM/cat-wet.gif' />
-        : <Menu/>
+        : <Panel/>
       }
     </div>
   );

@@ -11,13 +11,13 @@ body {
   color: var(--primary-color-text);
 }
 
-.ingameMenu {
+.panel {
   width: 1024px;
   height: 576px;
   background-color: var(--background-color);
 }
-.ingameMenuContainer {
-  background: var(--neutral-2);
+.panelContainer {
+  background: var(--neutral-1);
   height: 100%;
   display: flex;
   align-items:flex-start;
@@ -31,7 +31,7 @@ body {
   width: 500px;
   height: 50px;
   display: flex;
-  background-color: #0000007a;
+  background-color: #1414147a;
   justify-content: space-around;
   align-items: center;
   border-radius: 5px;
@@ -167,7 +167,7 @@ input[type='button'] {
 .checkbox-container input:disabled ~ .checkmark:after {
   display: block;
   position: absolute;
-  color: #444;
+  color: #2c2c2c;
   font-size: 24px;
   font-weight: bold;
   top: 50%;

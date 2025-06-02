@@ -183,7 +183,7 @@ export function PresencePreview() {
       <div className={"presenceDetails"}>{presence.details}</div>
     </div>
     <div>
-      <div className={"presenceAgent"}>{displayAgent ? (presence.assets.small_text || "No agent") : "Agent display disabled"}</div>
+      <div className={"presenceAgent"}>{displayAgent ? (presence.assets.small_text || "No agent") : "Agent display is Disabled"}</div>
       <div className={"presenceState"}>{presence.state}</div>
     </div>
   </div>

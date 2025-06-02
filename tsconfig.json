@@ -16,6 +16,13 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "baseUrl": "src",
+    "paths": {
+      "@components/*": ["components/*"],
+      "@screens/*": ["screens/*"],
+      "@styles/*": ["rootStyles/*"],
+      "@lib/*": ["lib/*"],
+      "@features/*": ["features/*"],
+    },
     "types": [
       "@overwolf/types"
     ]
