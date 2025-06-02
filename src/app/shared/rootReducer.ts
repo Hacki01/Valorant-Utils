@@ -1,5 +1,5 @@
 import { combineReducers } from "@reduxjs/toolkit";
-import background from "screens/background/stores/background";
+import background from "screens/background/stores/store";
 import ingame from "screens/ingame/stores/ingame";
 
 

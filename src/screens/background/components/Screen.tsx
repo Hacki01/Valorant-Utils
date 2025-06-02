@@ -7,15 +7,16 @@ import {
 import { useGameEventProvider, useWindow } from "overwolf-hooks";
 import { useCallback, useEffect } from "react";
 import { VALORANT_CLASS_ID, getValorantGame } from "lib/games";
-import { setInfo, setEvent } from "../stores/background";
+import { setInfo, setEvent } from "../stores/store";
 import store from "app/shared/store";
 import { log } from "lib/log";
 import ValorantPresence from "./ValorantPresence";
 
-const { INGAME, NOTIFICATION } = WINDOW_NAMES;
+const { INGAME, NOTIFICATION, DESKTOP } = WINDOW_NAMES;
 
 const BackgroundWindow = () => {
   const [ingame] = useWindow(INGAME, DISPLAY_OVERWOLF_HOOKS_LOGS);
+  const [desktop] = useWindow(DESKTOP, DISPLAY_OVERWOLF_HOOKS_LOGS);
   const [notification] = useWindow(NOTIFICATION, DISPLAY_OVERWOLF_HOOKS_LOGS);
 
   const { start, stop } = useGameEventProvider(
@@ -59,10 +60,10 @@ const BackgroundWindow = () => {
       if (valorant) {
         await Promise.all([start(), ingame?.minimize(), notification?.restore()]);
       } else {
-        await Promise.all([stop(), ingame?.close(), notification?.close()]);
+        await Promise.all([stop(), ingame?.close(), desktop?.restore(), notification?.close()]);
       }
     },
-    [ingame,notification, start, stop]
+    [ingame,notification,desktop, start, stop]
   );
 
   useEffect(() => {

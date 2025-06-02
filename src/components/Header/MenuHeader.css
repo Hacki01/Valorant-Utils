@@ -37,6 +37,7 @@
 }
 
 .header__title {
+  padding-left: 8px;
   color: var(--primary-color-text);
   font-size: var(--font-size-medium);
   user-select: none;

@@ -5,27 +5,26 @@ import {
 } from "app/shared/constants";
 import { useWindow, useDrag } from "overwolf-hooks";
 import { classNames, isDev } from "lib/utils";
-import { SVGComponent } from "./DesktopHeaderSVG";
-import "./styles/DesktopHeader.css";
-
-const { DESKTOP, /* BACKGROUND */ } = WINDOW_NAMES;
+import { SVGComponent } from "./MenuHeaderSVG";
+import "./MenuHeader.css";
 
 const handleDiscordClick = () => {
   if (isDev) return window.open("https://discord.gg/f6kHMT4A9F");
   overwolf.utils.openUrlInDefaultBrowser("https://discord.gg/f6kHMT4A9F");
 };
 
-export const DesktopHeader = () => {
-  const [desktopWindow] = useWindow(DESKTOP, DISPLAY_OVERWOLF_HOOKS_LOGS);
- /*  const [backgroundWindow] = useWindow(BACKGROUND, DISPLAY_OVERWOLF_HOOKS_LOGS); */
+export const Header = ({windowname} : {windowname: "DESKTOP" | "INGAME"}) => {
+  const WINDOW = WINDOW_NAMES[windowname]
+  const [userWindow] = useWindow(WINDOW, DISPLAY_OVERWOLF_HOOKS_LOGS);
   const { onDragStart, onMouseMove, setCurrentWindowID } = useDrag(
     null,
     DISPLAY_OVERWOLF_HOOKS_LOGS,
   );
 
+
   const updateDragWindow = useCallback(() => {
-    if (desktopWindow?.id) setCurrentWindowID(desktopWindow.id);
-  }, [desktopWindow, setCurrentWindowID]);
+    if (userWindow?.id) setCurrentWindowID(userWindow.id);
+  }, [userWindow, setCurrentWindowID]);
 
   useEffect(updateDragWindow, [updateDragWindow]);
 
@@ -50,29 +49,8 @@ export const DesktopHeader = () => {
           </svg>
         </button>
         <button
-          className="header__icon header__control"
-          onClick={() => (window.location.href = "overwolf://settings")}
-        >
-          <svg>
-            <use xlinkHref="#window-control_settings" />
-          </svg>
-        </button>
-        <button className="header__icon header__control">
-          <svg>
-            <use xlinkHref="#window-control_support" />
-          </svg>
-        </button>
-        <button
-          className="header__icon header__control"
-          onClick={desktopWindow?.minimize}
-        >
-          <svg>
-            <use xlinkHref="#window-control_minimize" />
-          </svg>
-        </button>
-        <button
           className="header__icon header__control header__control__close"
-          onClick={desktopWindow?.close}
+          onClick={userWindow?.close}
         >
           <svg>
             <use xlinkHref="#window-control_close" />

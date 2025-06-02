@@ -4,7 +4,7 @@ import { getValorantGame, VALORANT_CLASS_ID } from "lib/games";
 import { useCallback, useEffect } from "react";
 
 import { initialize, isReady, setPresence,  dispose, Presence } from "features/discordRichPresence";
-import { GameInfo, Kill, MatchInfo, Me, changeDiscordConfigValue } from "screens/background/stores/background";
+import { GameInfo, Kill, MatchInfo, Me, changeDiscordConfigValue } from "screens/background/stores/store";
 import { ValorantAgents, ValorantMaps, ValorantModes } from "types/valorant";
 import { ingameNotification } from "features/notification";
 
@@ -100,7 +100,7 @@ const getPresence = (matchInfo: MatchInfo, me: Me, gameInfo: GameInfo, kill:Kill
 
 
 export default function ValorantPresence() {
-  const { matchInfo, me ,gameInfo, kill, discordConfig } = useSelector(
+  const { matchInfo, me ,gameInfo, kill } = useSelector(
     (state: RootReducer) => state.background,
   );
   const { displayDRP, displayAgent } = useSelector(
